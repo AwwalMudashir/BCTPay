@@ -1,0 +1,26 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.bctcorp.pay",
+            "sha256_cert_fingerprints": [
+                "5A:61:25:58:58:B7:FA:44:1D:83:C2:55:41:F5:34:2F:C3:AF:C4:7B:4A:10:0E:6D:3A:81:BD:80:6B:C1:4D:11"
+            ]
+        }
+    },
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.bctpay",
+            "sha256_cert_fingerprints": [
+                "5A:61:25:58:58:B7:FA:44:1D:83:C2:55:41:F5:34:2F:C3:AF:C4:7B:4A:10:0E:6D:3A:81:BD:80:6B:C1:4D:11"
+            ]
+        }
+    }
+]

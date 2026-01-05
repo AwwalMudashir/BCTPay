@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "993786256233",
+    "project_id": "bct-pay-3ca3b",
+    "storage_bucket": "bct-pay-3ca3b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:993786256233:android:ae52574da5b963c4f9fbf8",
+        "android_client_info": {
+          "package_name": "com.bctpay"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCND-P0gAcAG0cxOjHxnuM23oxfGgVcOOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
