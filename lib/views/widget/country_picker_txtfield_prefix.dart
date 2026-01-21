@@ -43,8 +43,9 @@ class _CountryPickerTxtFieldPrefixState
         bloc: countryListBloc,
         listener: (context, state) {
           if (state is CountryListState) {
-            if (state.value.code == 200) {
-              var countries = state.value.data ?? [];
+            final code = state.value.code;
+            if (code == "200" || code == "000" || code == "201") {
+              var countries = state.value.data;
               setDefaultCountry(countries);
               checkIsOneCountry(countries);
             }
@@ -87,25 +88,19 @@ class _CountryPickerTxtFieldPrefixState
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              CachedNetworkImage(
-                                imageUrl: baseUrlCountryFlag +
-                                    state.countryData.countryFlag,
-                                height: 30,
-                                width: 30,
-                                progressIndicatorBuilder:
-                                    progressIndicatorBuilder,
-                                errorWidget: (c, o, s) => const Icon(
-                                  Icons.error,
-                                  color: Colors.black,
+                              _FlagThumb(
+                                flagPath: state.countryData.countryFlag,
+                                countryCode: state.countryData.countryCode,
+                              ),
+                              const SizedBox(width: 5),
+                              Flexible(
+                                child: Text(
+                                  "+${state.selectedCountry.phoneCode}",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: textTheme.titleSmall
+                                      ?.copyWith(color: Colors.black),
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "+${state.selectedCountry.phoneCode}",
-                                style: textTheme.titleSmall
-                                    ?.copyWith(color: Colors.black),
                               ),
                             ],
                           ),
@@ -120,5 +115,39 @@ class _CountryPickerTxtFieldPrefixState
                 }),
           );
         });
+  }
+}
+
+class _FlagThumb extends StatelessWidget {
+  final String flagPath;
+  final String countryCode;
+  const _FlagThumb({required this.flagPath, required this.countryCode});
+
+  @override
+  Widget build(BuildContext context) {
+    if (countryCode.isNotEmpty) {
+      return CountryFlag.fromCountryCode(
+        countryCode,
+        height: 30,
+        width: 30,
+        shape: const RoundedRectangle(4),
+      );
+    }
+    final fullUrl = flagPath.startsWith('http')
+        ? flagPath
+        : (baseUrlCountryFlag.isNotEmpty ? "$baseUrlCountryFlag$flagPath" : "");
+    if (fullUrl.isEmpty) {
+      return const Icon(Icons.flag, color: Colors.grey);
+    }
+    return CachedNetworkImage(
+      imageUrl: fullUrl,
+      height: 30,
+      width: 30,
+      progressIndicatorBuilder: progressIndicatorBuilder,
+      errorWidget: (c, o, s) => const Icon(
+        Icons.flag,
+        color: Colors.grey,
+      ),
+    );
   }
 }

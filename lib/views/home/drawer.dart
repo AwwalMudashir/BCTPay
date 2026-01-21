@@ -26,7 +26,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return BlocListener(
       bloc: profileBloc,
       listener: (context, state) {
@@ -78,236 +77,238 @@ class _DrawerScreenState extends State<DrawerScreen> {
               top: 0,
               bottom: 0,
               child: Scaffold(
-                backgroundColor: backgroundColor,
+                backgroundColor: const Color(0xFFF6F7F9),
                 bottomNavigationBar: Container(
-                  alignment: Alignment.center,
-                  height: 90,
+                  padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04), // 4% of screen width
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      BlocConsumer(
+                      BlocBuilder(
                           bloc: selectThemeBloc,
-                          listener: (context, state) {
-                            if (state is SelectThemeState) {}
-                          },
-                          builder: (context, selectThemeState) {
-                            if (selectThemeState is SelectThemeState) {
-                              return ToggleButtons(
-                                selectedBorderColor: themeLogoColorOrange,
-                                fillColor: themeLogoColorOrange,
-                                borderColor: themeLogoColorOrange,
-                                borderRadius: BorderRadius.circular(20),
-                                onPressed: (i) {
-                                  isSelected =
-                                      isSelected.map((e) => false).toList();
-                                  isSelected[i] = true;
-                                  selectThemeBloc.add(SelectThemeEvent(i == 0
-                                      ? ThemeMode.dark
-                                      : ThemeMode.light));
-                                  customerSettingBloc.add(
-                                      UpdateCustomerSettingEvent(
-                                          themeColor:
-                                              i == 0 ? "dark" : "light"));
-                                },
-                                isSelected: isSelected,
+                          builder: (context, state) {
+                            ThemeMode current = ThemeMode.light;
+                            if (state is SelectThemeState) {
+                              current = state.themeMode;
+                            }
+                            return _card([
+                              _sectionTitle(textTheme, appLocalizations(context).theme),
+                              const SizedBox(height: 12),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.dark_mode_outlined,
-                                          color: isDarkMode
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          appLocalizations(context).dark,
-                                          style: textTheme.titleSmall,
-                                        ),
-                                      ],
-                                    ),
+                                  _themeChip(
+                                    textTheme,
+                                    mode: ThemeMode.light,
+                                    current: current,
+                                    label: appLocalizations(context).light,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.light_mode,
-                                          color: Colors.white,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          appLocalizations(context).light,
-                                          style: textTheme.titleSmall
-                                              ?.copyWith(color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
+                                  _themeChip(
+                                    textTheme,
+                                    mode: ThemeMode.dark,
+                                    current: current,
+                                    label: appLocalizations(context).dark,
                                   ),
                                 ],
-                              );
-                            }
-                            return const Loader();
+                              )
+                            ]);
                           }),
-                      10.height,
+                      const SizedBox(height: 12),
                       FutureBuilder(
                         future: getAppVersionInfo(),
                         builder: (context, snapshot) => Text(
                           "${appLocalizations(context).version} ${snapshot.data?.version ?? ""}",
-                          style:
-                              textTheme.bodySmall?.copyWith(color: Colors.grey),
+                          style: textTheme.bodySmall?.copyWith(color: Colors.grey.shade600),
                         ),
                       ),
-                      10.height
                     ],
                   ),
                 ),
-                body: ListView(
-                  children: [
-                    ProfilePicView(),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    BlocBuilder(
-                        bloc: getProfileDetailFromLocalBloc,
-                        builder: (context, state) {
-                          if (state is SharedPrefGetUserDetailState) {
-                            var userName = state.user.userName;
-                            var email = state.user.email;
-                            return Column(
-                              children: [
-                                Text(
-                                  userName,
-                                  softWrap: true,
-                                  maxLines: 2,
-                                  textAlign: TextAlign.center,
-                                  style: textTheme.displayLarge,
-                                ),
-                                Text(email, style: textTheme.bodySmall),
-                              ],
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        }),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    AccountMenu(
-                      title: appLocalizations(context).accountDetailDrawer,
-                      image: Assets.assetsImagesMenuPerson,
-                      onTap: () {
-                        Navigator.of(context)
-                            .pushNamed(AppRoutes.profileDetails);
-                      },
-                    ),
-                    AccountMenu(
-                      title: appLocalizations(context).transactions,
-                      icon: Icon(Icons.currency_exchange_outlined),
-                      onTap: () {
-                        bottomNavigationBloc.add(SelectIntEvent(2));
-                        Navigator.pop(context);
-                      },
-                    ),
-                    AccountMenu(
-                      title: appLocalizations(context).paymentRequests,
-                      image: Assets.assetsImagesSendMoney2,
-                      onTap: () {
-                        Navigator.of(context)
-                            .pushNamed(AppRoutes.paymentRequests);
-                      },
-                    ),
-                    AccountMenu(
-                      title: appLocalizations(context).billsNSubscriptions,
-                      icon: const Icon(Icons.blinds_closed),
-                      onTap: () {
-                        Navigator.of(context)
-                            .pushNamed(AppRoutes.billsNSubscription);
-                      },
-                    ),
-                    ExpansionMenu(
-                      leading: Icon(Icons.settings_outlined),
-                      title: Text(appLocalizations(context).settings),
+                body: SafeArea(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04), // 4% of screen width
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        BlocBuilder(
-                            bloc: localizationBloc,
-                            builder: (context, state) {
-                              if (state is ChangeLocaleState) {
-                                return AccountMenu(
-                                  title: appLocalizations(context).language,
-                                  prefix: CountryFlag.fromLanguageCode(
-                                    state.locale.languageCode == "en"
-                                        ? "en-us"
-                                        : state.locale.languageCode,
-                                    height: 20,
-                                    width: 20,
-                                  ),
-                                  image: Assets.assetsImagesMenuLang,
-                                  onTap: () {
-                                    _showDialog(context);
-                                  },
+                        // Profile Section
+                        _card([
+                          Row(
+                            children: [
+                              ProfilePicView(),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: BlocBuilder(
+                                    bloc: getProfileDetailFromLocalBloc,
+                                    builder: (context, state) {
+                                      if (state is SharedPrefGetUserDetailState) {
+                                        var userName = state.user.userName;
+                                        var email = state.user.email;
+                                        return Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              userName,
+                                              softWrap: true,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: textTheme.titleMedium?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                            Text(
+                                              email,
+                                              style: textTheme.bodySmall?.copyWith(
+                                                color: Colors.grey.shade600,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                      return const SizedBox.shrink();
+                                    }),
+                              ),
+                            ],
+                          ),
+                        ]),
+                        const SizedBox(height: 16),
+
+                        // Account Section
+                        _card([
+                          _sectionTitle(textTheme, appLocalizations(context).account),
+                          const SizedBox(height: 8),
+                          _drawerTile(
+                            context,
+                            icon: Icons.account_balance_wallet_rounded,
+                            title: appLocalizations(context).profile,
+                            onTap: () => Navigator.of(context).pushNamed(AppRoutes.accountDetail),
+                          ),
+                          _divider(),
+                          _drawerTile(
+                            context,
+                            icon: Icons.receipt_long_rounded,
+                            title: appLocalizations(context).transactions,
+                            onTap: () {
+                              bottomNavigationBloc.add(SelectIntEvent(2));
+                              Navigator.pop(context);
+                            },
+                          ),
+                          _divider(),
+                          _drawerTile(
+                            context,
+                            icon: Icons.request_page_rounded,
+                            title: appLocalizations(context).paymentRequests,
+                            onTap: () => Navigator.of(context).pushNamed(AppRoutes.paymentRequests),
+                          ),
+                          _divider(),
+                          _drawerTile(
+                            context,
+                            icon: Icons.subscriptions_rounded,
+                            title: appLocalizations(context).billsNSubscriptions,
+                            onTap: () => Navigator.of(context).pushNamed(AppRoutes.billsNSubscription),
+                          ),
+                        ]),
+                        const SizedBox(height: 12),
+
+                        // Settings Section
+                        _card([
+                          _sectionTitle(textTheme, appLocalizations(context).settings),
+                          const SizedBox(height: 8),
+                          BlocBuilder(
+                              bloc: localizationBloc,
+                              builder: (context, state) {
+                                Locale currentLocale = const Locale('en');
+                                if (state is ChangeLocaleState) {
+                                  currentLocale = state.locale;
+                                }
+                                return Column(
+                                  children: [
+                                    _sectionTitle(textTheme, appLocalizations(context).language),
+                                    const SizedBox(height: 12),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        _languageChip(
+                                          textTheme,
+                                          locale: const Locale('en'),
+                                          current: currentLocale,
+                                          label: 'English',
+                                          flagCode: 'us',
+                                        ),
+                                        _languageChip(
+                                          textTheme,
+                                          locale: const Locale('fr'),
+                                          current: currentLocale,
+                                          label: 'Français',
+                                          flagCode: 'fr',
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12),
+                                  ],
                                 );
-                              }
-                              return const Loader();
-                            }),
-                        AccountMenu(
-                          title: appLocalizations(context).security,
-                          image: Assets.assetsImagesMenuSecurity,
-                          onTap: () {
-                            Navigator.of(context).pushNamed(AppRoutes.webview,
+                              }),
+                          _drawerTile(
+                            context,
+                            icon: Icons.security_rounded,
+                            title: appLocalizations(context).security,
+                            onTap: () => Navigator.of(context).pushNamed(AppRoutes.webview,
                                 arguments: CustomWebView(
                                   isAvailable: true,
                                   title: appLocalizations(context).security,
                                   url: securityWebUrl,
-                                ));
-                          },
-                        ),
-                        AccountMenu(
-                          title: appLocalizations(context).privacyPolicy,
-                          image: Assets.assetsImagesMenuPolicy,
-                          onTap: () {
-                            Navigator.of(context).pushNamed(AppRoutes.webview,
+                                )),
+                          ),
+                          _divider(),
+                          _drawerTile(
+                            context,
+                            icon: Icons.policy_rounded,
+                            title: appLocalizations(context).privacyPolicy,
+                            onTap: () => Navigator.of(context).pushNamed(AppRoutes.webview,
                                 arguments: CustomWebView(
                                   isAvailable: true,
-                                  title:
-                                      appLocalizations(context).privacyPolicy,
+                                  title: appLocalizations(context).privacyPolicy,
                                   url: privacyPolicyWebUrl,
-                                ));
-                          },
-                        ),
+                                )),
+                          ),
+                        ]),
+                        const SizedBox(height: 12),
+
+                        // Help & Support Section
+                        _card([
+                          _sectionTitle(textTheme, appLocalizations(context).helpNSupport),
+                          const SizedBox(height: 8),
+                          _drawerTile(
+                            context,
+                            icon: Icons.help_outline_rounded,
+                            title: appLocalizations(context).faq,
+                            onTap: () => Navigator.of(context).pushNamed(AppRoutes.faq),
+                          ),
+                          _divider(),
+                          _drawerTile(
+                            context,
+                            icon: Icons.support_agent_rounded,
+                            title: appLocalizations(context).queries,
+                            onTap: () => Navigator.of(context).pushNamed(AppRoutes.queries),
+                          ),
+                        ]),
+                        const SizedBox(height: 12),
+
+                        // Logout Section
+                        _card([
+                          _drawerTile(
+                            context,
+                            icon: Icons.logout_rounded,
+                            title: appLocalizations(context).logout,
+                            isDestructive: true,
+                            isLogout: true,
+                            onTap: () => showLogoutDialog(context),
+                          ),
+                        ]),
                       ],
                     ),
-                    ExpansionMenu(
-                        leading: Icon(Icons.support_agent),
-                        title: Text(appLocalizations(context).helpNSupport),
-                        children: [
-                          AccountMenu(
-                            title: appLocalizations(context).faq,
-                            image: Assets.assetsImagesMenuHelp,
-                            onTap: () {
-                              Navigator.of(context).pushNamed(AppRoutes.faq);
-                            },
-                          ),
-                          AccountMenu(
-                              onTap: () {
-                                Navigator.of(context)
-                                    .pushNamed(AppRoutes.queries);
-                              },
-                              title: appLocalizations(context).queries,
-                              image: Assets.assetsImagesMenuPhone),
-                        ]),
-                    AccountMenu(
-                      title: appLocalizations(context).logout,
-                      image: Assets.assetsImagesMenuLogout,
-                      onTap: () {
-                        showLogoutDialog(context);
-                      },
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -327,46 +328,236 @@ class _DrawerScreenState extends State<DrawerScreen> {
     );
   }
 
-  void _showDialog(BuildContext context) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => Container(
-        height: 216,
-        padding: const EdgeInsets.only(top: 6.0),
-        margin: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+  Widget _card(List<Widget> children) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 4)
+          )
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
+      ),
+    );
+  }
+
+  Widget _sectionTitle(TextTheme textTheme, String title) {
+    return Text(
+      title,
+      style: textTheme.titleSmall?.copyWith(
+        fontWeight: FontWeight.w700,
+        color: Colors.black87,
+      ),
+    );
+  }
+
+  Widget _drawerTile(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    Widget? prefix,
+    bool isDestructive = false,
+    bool isLogout = false,
+    required VoidCallback onTap,
+  }) {
+    final textTheme = Theme.of(context).textTheme;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: isLogout ? 12 : 8, horizontal: isLogout ? 4 : 0),
+        margin: EdgeInsets.symmetric(vertical: isLogout ? 4 : 0),
+        decoration: isLogout ? BoxDecoration(
+          color: Colors.red.shade50,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.red.shade200, width: 1),
+        ) : null,
+        child: Row(
+          children: [
+            Container(
+              width: isLogout ? 40 : 32,
+              height: isLogout ? 40 : 32,
+              decoration: BoxDecoration(
+                color: (isDestructive || isLogout)
+                    ? Colors.red.shade100
+                    : themeLogoColorBlue.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(10),
+                border: (isDestructive || isLogout) ? Border.all(color: Colors.red.shade300, width: 1) : null,
+              ),
+              child: Icon(
+                icon,
+                size: isLogout ? 22 : 18,
+                color: (isDestructive || isLogout) ? Colors.red.shade700 : themeLogoColorBlue,
+              ),
+            ),
+            const SizedBox(width: 12),
+            if (prefix != null) ...[
+              prefix,
+              const SizedBox(width: 8),
+            ],
+            Expanded(
+              child: Text(
+                title,
+                style: textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: (isDestructive || isLogout) ? Colors.red.shade700 : Colors.black87,
+                ),
+              ),
+            ),
+            Icon(
+              Icons.chevron_right_rounded,
+              size: 20,
+              color: Colors.grey.shade400,
+            ),
+          ],
         ),
-        color: isDarkMode(context) ? themeLogoColorBlue : Colors.white,
-        child: SafeArea(
-          top: false,
-          child: BlocBuilder(
-              bloc: localizationBloc,
-              builder: (context, state) {
-                if (state is ChangeLocaleState) {
-                  return CupertinoPicker(
-                    magnification: 1.22,
-                    squeeze: 1.2,
-                    useMagnifier: true,
-                    itemExtent: 32,
-                    scrollController: FixedExtentScrollController(
-                      initialItem: supportedLocales.indexWhere(
-                          (e) => e.languageCode == state.locale.languageCode),
-                    ),
-                    onSelectedItemChanged: (int selectedItem) {
-                      var locale = supportedLocales[selectedItem];
-                      localizationBloc.add(ChangeLocaleEvent(locale));
-                      customerSettingBloc.add(UpdateCustomerSettingEvent(
-                          language: locale.languageCode));
-                    },
-                    children: supportedLocales
-                        .map((e) => Text(LanguageCodes.fromCode(e.languageCode)
-                            .nativeName
-                            .capitalize()))
-                        .toList(),
-                  );
-                }
-                return const Loader();
-              }),
+      ),
+    );
+  }
+
+  Widget _divider() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Divider(height: 1, color: Color(0xFFE5E7EB)),
+    );
+  }
+
+  Widget _themeChip(
+    TextTheme textTheme, {
+    required ThemeMode mode,
+    required ThemeMode current,
+    required String label,
+  }) {
+    final isSelected = mode == current;
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          selectThemeBloc.add(SelectThemeEvent(mode));
+          customerSettingBloc.add(UpdateCustomerSettingEvent(
+            themeColor: mode == ThemeMode.dark ? "dark" : "light",
+          ));
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          decoration: BoxDecoration(
+            color: isSelected
+                ? themeLogoColorBlue.withValues(alpha: 0.2)
+                : Colors.grey.shade50,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+                color: isSelected
+                    ? themeLogoColorBlue
+                    : Colors.grey.shade300,
+                width: isSelected ? 2 : 1),
+            boxShadow: isSelected ? [
+              BoxShadow(
+                color: themeLogoColorBlue.withValues(alpha: 0.3),
+                blurRadius: 8,
+                spreadRadius: 1,
+                offset: const Offset(0, 2),
+              )
+            ] : null,
+          ),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  label,
+                  style: textTheme.bodySmall?.copyWith(
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
+                    color: isSelected ? themeLogoColorBlue : Colors.black87,
+                  ),
+                ),
+                if (isSelected) ...[
+                  const SizedBox(width: 4),
+                  Icon(
+                    Icons.check_circle,
+                    size: 16,
+                    color: themeLogoColorBlue,
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _languageChip(TextTheme textTheme,
+      {required Locale locale,
+      required Locale current,
+      required String label,
+      required String flagCode}) {
+    final isSelected = current.languageCode == locale.languageCode;
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          localizationBloc.add(ChangeLocaleEvent(locale));
+          customerSettingBloc.add(UpdateCustomerSettingEvent(
+              language: locale.languageCode));
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          decoration: BoxDecoration(
+            color: isSelected
+                ? themeLogoColorBlue.withValues(alpha: 0.2)
+                : Colors.grey.shade50,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+                color: isSelected
+                    ? themeLogoColorBlue
+                    : Colors.grey.shade300,
+                width: isSelected ? 2 : 1),
+            boxShadow: isSelected ? [
+              BoxShadow(
+                color: themeLogoColorBlue.withValues(alpha: 0.3),
+                blurRadius: 8,
+                spreadRadius: 1,
+                offset: const Offset(0, 2),
+              )
+            ] : null,
+          ),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CountryFlag.fromCountryCode(
+                  flagCode,
+                  height: 16,
+                  width: 16,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  label,
+                  style: textTheme.bodySmall?.copyWith(
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
+                    color: isSelected ? themeLogoColorBlue : Colors.black87,
+                  ),
+                ),
+                if (isSelected) ...[
+                  const SizedBox(width: 4),
+                  Icon(
+                    Icons.check_circle,
+                    size: 16,
+                    color: themeLogoColorBlue,
+                  ),
+                ],
+              ],
+            ),
+          ),
         ),
       ),
     );

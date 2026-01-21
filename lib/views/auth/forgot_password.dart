@@ -142,8 +142,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             bloc: selectCountryBloc,
                             listener: (context, state) {
                               if (state is SelectCountryState) {
-                                if (emailPhoneController.text.contains(
-                                    state.countryData.phoneCode ?? "")) {
+                                if (emailPhoneController.text
+                                    .contains(state.countryData.phoneCode)) {
                                   emailPhoneController.text =
                                       emailPhoneController.text.replaceAll(
                                           "+${state.countryData.phoneCode}",

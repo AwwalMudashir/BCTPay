@@ -158,6 +158,12 @@ abstract class AppLocalizations {
   /// **'Account Holder Name'**
   String get accountHolderName;
 
+  /// No description provided for @accountInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Information'**
+  String get accountInformation;
+
   /// No description provided for @accountNumber.
   ///
   /// In en, this message translates to:
@@ -259,6 +265,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Amount Requested Successfully'**
   String get amountRequestedSuccessfully;
+
+  /// No description provided for @and.
+  ///
+  /// In en, this message translates to:
+  /// **'and'**
+  String get and;
 
   /// No description provided for @amountShouldBeGreaterThanZero.
   ///
@@ -795,6 +807,18 @@ abstract class AppLocalizations {
   /// **'Date Of Birth'**
   String get dob;
 
+  /// No description provided for @nationality.
+  ///
+  /// In en, this message translates to:
+  /// **'Nationality'**
+  String get nationality;
+
+  /// No description provided for @enterNationality.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Nationality'**
+  String get enterNationality;
+
   /// No description provided for @docIdNumber.
   ///
   /// In en, this message translates to:
@@ -924,7 +948,7 @@ abstract class AppLocalizations {
   /// No description provided for @enterAmount.
   ///
   /// In en, this message translates to:
-  /// **'Enter Amount'**
+  /// **'Enter amount'**
   String get enterAmount;
 
   /// No description provided for @enterBankCode.
@@ -1358,6 +1382,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'In Order To Completed Your KYC, Please Upload A Copy Of Your Identity Document'**
   String get idVerificationDesc;
+
+  /// No description provided for @iAgreeToThe.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to the'**
+  String get iAgreeToThe;
 
   /// No description provided for @identityVerification.
   ///
@@ -2836,6 +2866,12 @@ abstract class AppLocalizations {
   /// **'Search Here...'**
   String get searchHere;
 
+  /// No description provided for @searchBeneficiaries.
+  ///
+  /// In en, this message translates to:
+  /// **'Search beneficiaries...'**
+  String get searchBeneficiaries;
+
   /// No description provided for @security.
   ///
   /// In en, this message translates to:
@@ -3070,6 +3106,18 @@ abstract class AppLocalizations {
   /// **'Sign Up'**
   String get signUp;
 
+  /// No description provided for @dontHaveAnAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get dontHaveAnAccount;
+
+  /// No description provided for @alreadyHaveAnAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get alreadyHaveAnAccount;
+
   /// No description provided for @signupTnc.
   ///
   /// In en, this message translates to:
@@ -3159,6 +3207,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Theme'**
   String get theme;
+
+  /// No description provided for @termsAndConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms and Conditions'**
+  String get termsAndConditions;
 
   /// No description provided for @thisFieldShouldNotBeEmpty.
   ///
@@ -3285,6 +3339,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Transfer'**
   String get transfer;
+
+  /// No description provided for @transferMobileMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer to Mobile Money'**
+  String get transferMobileMoney;
+
+  /// No description provided for @transferMobileMoneySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send funds to a mobile money wallet'**
+  String get transferMobileMoneySubtitle;
+
+  /// No description provided for @sendViaUsertag.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Via Usertag'**
+  String get sendViaUsertag;
+
+  /// No description provided for @sendViaUsertagSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send funds to a friend using their tag'**
+  String get sendViaUsertagSubtitle;
+
+  /// No description provided for @sendToBankAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to Bank Account'**
+  String get sendToBankAccount;
+
+  /// No description provided for @sendToBankAccountSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to a recipient bank account'**
+  String get sendToBankAccountSubtitle;
+
+  /// No description provided for @scanQrToSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR Code to Send'**
+  String get scanQrToSend;
+
+  /// No description provided for @scanQrToSendSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send funds by scanning a QR code'**
+  String get scanQrToSendSubtitle;
+
+  /// No description provided for @beneficiaries.
+  ///
+  /// In en, this message translates to:
+  /// **'Beneficiaries'**
+  String get beneficiaries;
+
+  /// No description provided for @seeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See All'**
+  String get seeAll;
+
+  /// No description provided for @selectPaymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the payment method you want to use.'**
+  String get selectPaymentMethod;
+
+  /// No description provided for @unableToLoadBeneficiaries.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load beneficiaries'**
+  String get unableToLoadBeneficiaries;
+
+  /// No description provided for @noBeneficiaries.
+  ///
+  /// In en, this message translates to:
+  /// **'No beneficiaries yet'**
+  String get noBeneficiaries;
+
+  /// No description provided for @moreTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get moreTitle;
+
+  /// No description provided for @transactionHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction History'**
+  String get transactionHistoryTitle;
+
+  /// No description provided for @helpSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Support'**
+  String get helpSupport;
+
+  /// No description provided for @themeAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto'**
+  String get themeAuto;
+
+  /// No description provided for @momoType.
+  ///
+  /// In en, this message translates to:
+  /// **'Momo Type'**
+  String get momoType;
+
+  /// No description provided for @pleaseSelectMomo.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a mobile money provider'**
+  String get pleaseSelectMomo;
+
+  /// No description provided for @pleaseSelectWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a wallet'**
+  String get pleaseSelectWallet;
+
+  /// No description provided for @pleaseSelectCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a country'**
+  String get pleaseSelectCountry;
+
+  /// No description provided for @pleaseFillRequiredFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill all required fields'**
+  String get pleaseFillRequiredFields;
+
+  /// No description provided for @change.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get change;
 
   /// No description provided for @transferDetails.
   ///
@@ -3760,6 +3952,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your Payment Of'**
   String get yourPaymentOf;
+
+  /// No description provided for @generatePaymentLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Payment Link'**
+  String get generatePaymentLink;
+
+  /// No description provided for @generatePaymentLinkSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a payment link for pay by bank.'**
+  String get generatePaymentLinkSubtitle;
+
+  /// No description provided for @generateLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Link'**
+  String get generateLink;
+
+  /// No description provided for @enterValidAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid amount'**
+  String get enterValidAmount;
+
+  /// No description provided for @requiredField.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get requiredField;
+
+  /// No description provided for @paymentLinkGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment link generated'**
+  String get paymentLinkGenerated;
+
+  /// No description provided for @virtualAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Virtual Account Number'**
+  String get virtualAccount;
+
+  /// No description provided for @currency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get currency;
+
+  /// No description provided for @receive.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive'**
+  String get receive;
+
+  /// No description provided for @receiveMoneyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive Money'**
+  String get receiveMoneyTitle;
+
+  /// No description provided for @receiveSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your network to receive funds.'**
+  String get receiveSubtitle;
+
+  /// No description provided for @selectChainNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Chain Network'**
+  String get selectChainNetwork;
+
+  /// No description provided for @fetchPaymentStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Fetch Payment Status'**
+  String get fetchPaymentStatus;
+
+  /// No description provided for @copyAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Address'**
+  String get copyAddress;
+
+  /// No description provided for @shareAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Address'**
+  String get shareAddress;
+
+  /// No description provided for @addressCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Address copied to clipboard'**
+  String get addressCopied;
+
+  /// No description provided for @walletAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet Address'**
+  String get walletAddress;
+
+  /// No description provided for @receiveWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Send only {network} deposits to this address. Other funds will not be credited or refunded.'**
+  String receiveWarning(Object network);
+
+  /// No description provided for @myQrTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My QR Code'**
+  String get myQrTitle;
+
+  /// No description provided for @myQrDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Show this code to receive payments quickly.'**
+  String get myQrDescription;
+
+  /// No description provided for @scanQrToReceive.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan a QR to receive money'**
+  String get scanQrToReceive;
+
+  /// No description provided for @amountToReceive.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount to receive'**
+  String get amountToReceive;
+
+  /// No description provided for @receiveDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive details'**
+  String get receiveDetails;
+
+  /// No description provided for @accountType.
+  ///
+  /// In en, this message translates to:
+  /// **'Account type'**
+  String get accountType;
+
+  /// No description provided for @confirmAndReceive.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm & Receive'**
+  String get confirmAndReceive;
 }
 
 class _AppLocalizationsDelegate

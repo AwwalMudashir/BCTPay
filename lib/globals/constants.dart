@@ -47,7 +47,7 @@ const int cacheHeight = 50;
 const int cacheWidth = 50;
 const double textFieldSuffixScale = 5;
 
-const List<Locale> supportedLocales =
+final List<Locale> supportedLocales =
     AppLocalizations.supportedLocales; //[Locale("en"), Locale("fr")];
 String selectedLanguage = "fr";
 CountryData? selectedCountry;
@@ -68,13 +68,24 @@ List<LocalizationsDelegate> localizationsDelegates = [
 final String wlID = dotenv.env["WL_ID"] ?? "";
 
 ///urls
-const String _defaultBaseUrl = 'https://corestack.app:8008/mmcp/api/v1/';
-final String baseUrl = _defaultBaseUrl;
-final String baseUrlTransaction = _defaultBaseUrl;
-final String baseUrlPublic = _defaultBaseUrl;
+const String _coreBaseUrl = 'https://corestack.app:8008/mmcp/api/v1';
+const String _legacyBaseUrl = 'https://plg.apiuser.bctpay.io';
+
+/// Legacy (default) APIs
+final String baseUrl = _legacyBaseUrl;
+final String baseUrlTransaction = _legacyBaseUrl;
+final String baseUrlPublic = "$baseUrl/api/public";
+
+/// Corestack APIs (for specific endpoints)
+final String baseUrlCore = _coreBaseUrl;
+final String baseUrlCoreTransaction = _coreBaseUrl;
+final String baseUrlCorePublic = _coreBaseUrl;
 final String merchantCode = dotenv.env["merchantCode"] ?? "BCTPAY";
+
+// Legacy customer-scoped bases (legacy host has no /api/v1; append /api/ segments)
 final String baseUrlCustomer = "$baseUrl/api/customer";
-final String baseUrlCustomerTxn = "$baseUrlTransaction/api/customertransaction";
+final String baseUrlCustomerTxn =
+    "$baseUrlTransaction/api/customertransaction";
 final String baseUrlCustomerTxnPublic = "$baseUrlTransaction/api/public";
 final String baseUrlCountryFlag = dotenv.env["baseUrlCountryFlag"] ?? "";
 final String baseUrlProfileImage = dotenv.env["baseUrlProfileImage"] ?? "";

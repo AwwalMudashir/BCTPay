@@ -29,9 +29,9 @@ class KycDetailResponse {
       KycDetailResponse(
         code: json["code"],
         data: json["data"] == null ? null : KYCData.fromJson(json["data"]),
-        message: json["message"],
+        message: json["message"]?.toString(),
         success: json["success"],
-        error: json["error"],
+        error: json["error"]?.toString(),
       );
 
   Map<String, dynamic> toJson() => {

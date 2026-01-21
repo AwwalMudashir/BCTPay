@@ -41,9 +41,18 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   @override
   void initState() {
+    _prefillGenderFromLogin();
     profileBloc.add(GetProfileEvent());
     kycBloc.add(GetKYCDetailEvent());
     super.initState();
+  }
+
+  Future<void> _prefillGenderFromLogin() async {
+    final savedGender = await SharedPreferenceHelper.getGender();
+    if (savedGender != null && savedGender.isNotEmpty) {
+      selectedGender = savedGender;
+      selectGenderBloc.add(SelectStringEvent(savedGender));
+    }
   }
 
   @override
@@ -366,7 +375,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                   },
                                   prefixWidget: CountryPickerTxtFieldPrefix(
                                     selectPhoneCountryBloc: selectPhoneCodeBloc,
-                                    readOnly: true,
+                                    readOnly: isReadOnly,
                                   ),
                                   validator: (value) {
                                     if (value!.isEmpty) {

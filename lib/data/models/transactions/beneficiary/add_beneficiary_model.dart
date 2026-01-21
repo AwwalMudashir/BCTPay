@@ -7,74 +7,63 @@ String addBeneficiaryResponseToJson(AddBeneficiaryResponse data) =>
     json.encode(data.toJson());
 
 class AddBeneficiaryResponse {
-  final int code;
-  final BankAccount? data;
-  final String message;
-  final bool? success;
+  final String code;
+  final String desc;
+  final String nextURL;
+  final String id;
+  final String refNo;
+  final double amount;
+  final String code3;
+  final List<Map<String, dynamic>> listData;
 
   AddBeneficiaryResponse({
     required this.code,
-    required this.data,
-    required this.message,
-    required this.success,
+    required this.desc,
+    required this.nextURL,
+    required this.id,
+    required this.refNo,
+    required this.amount,
+    required this.code3,
+    required this.listData,
   });
 
-  factory AddBeneficiaryResponse.fromJson(Map<String, dynamic> json) =>
-      AddBeneficiaryResponse(
-        code: json["code"],
-        data: json["data"] == null ? null : BankAccount.fromJson(json["data"]),
-        message: json["message"],
-        success: json["success"],
-      );
+  bool get isSuccess =>
+      code == "00" || code == "000" || code.toUpperCase() == "SUCCESS";
+  String get message => desc;
+  int? get codeInt => int.tryParse(code);
+  bool get isSessionExpired =>
+      codeInt == HTTPResponseStatusCodes.sessionExpireCode;
+
+  factory AddBeneficiaryResponse.fromJson(Map<String, dynamic> json) {
+    final listJson = json["listData"] as List? ?? [];
+    return AddBeneficiaryResponse(
+      code: json["code"]?.toString() ?? "",
+      desc: json["desc"]?.toString() ?? "",
+      nextURL: json["nextURL"]?.toString() ?? "",
+      id: json["id"]?.toString() ?? "",
+      refNo: json["refNo"]?.toString() ?? "",
+      amount: _toDouble(json["amount"]),
+      code3: json["code3"]?.toString() ?? "",
+      listData: listJson
+          .map((e) => (e is Map<String, dynamic>) ? e : <String, dynamic>{})
+          .toList(),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "code": code,
-        "data": data?.toJson(),
-        "message": message,
-        "success": success,
+        "desc": desc,
+        "nextURL": nextURL,
+        "id": id,
+        "refNo": refNo,
+        "amount": amount,
+        "code3": code3,
+        "listData": listData,
       };
 }
 
-// class Data {
-//   final String customerId;
-//   final String accountType;
-//   final String? accountNumber;
-//   final String? accountId;
-//   final String id;
-//   final DateTime createdAt;
-//   final DateTime updatedAt;
-//   final int v;
-
-//   Data({
-//     required this.customerId,
-//     required this.accountType,
-//     required this.accountNumber,
-//     required this.accountId,
-//     required this.id,
-//     required this.createdAt,
-//     required this.updatedAt,
-//     required this.v,
-//   });
-
-//   factory Data.fromJson(Map<String, dynamic> json) => Data(
-//         customerId: json["customerId"],
-//         accountType: json["accountType"],
-//         accountNumber: json["accountNumber"],
-//         accountId: json["accountId"],
-//         id: json["_id"],
-//         createdAt: DateTime.parse(json["createdAt"]),
-//         updatedAt: DateTime.parse(json["updatedAt"]),
-//         v: json["__v"],
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "customerId": customerId,
-//         "accountType": accountType,
-//         "accountNumber": accountNumber,
-//         "accountId": accountId,
-//         "_id": id,
-//         "createdAt": createdAt.toIso8601String(),
-//         "updatedAt": updatedAt.toIso8601String(),
-//         "__v": v,
-//       };
-// }
+double _toDouble(dynamic v) {
+  if (v == null) return 0;
+  if (v is num) return v.toDouble();
+  return double.tryParse(v.toString()) ?? 0;
+}

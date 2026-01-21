@@ -34,6 +34,25 @@ class SendOTPEvent extends ApisBlocEvent {
       ];
 }
 
+class VerifyRegistrationOtpEvent extends ApisBlocEvent {
+  final String email;
+  final String otp;
+
+  VerifyRegistrationOtpEvent({required this.email, required this.otp});
+
+  @override
+  List<Object?> get props => [email, otp];
+}
+
+class ResendRegistrationOtpEvent extends ApisBlocEvent {
+  final String email;
+
+  ResendRegistrationOtpEvent({required this.email});
+
+  @override
+  List<Object?> get props => [email];
+}
+
 class SignUpEvent extends ApisBlocEvent {
   final String email;
   final String phoneCode;
@@ -46,6 +65,9 @@ class SignUpEvent extends ApisBlocEvent {
   final String? country;
   final String? pinCode;
   final String? gender;
+  final String? onboardingId;
+  final String? dateOfBirth;
+  final String? nationality;
 
   SignUpEvent({
     required this.email,
@@ -59,6 +81,9 @@ class SignUpEvent extends ApisBlocEvent {
     this.country,
     this.pinCode,
     this.gender,
+    this.onboardingId,
+    this.dateOfBirth,
+    this.nationality,
   });
 
   @override
@@ -73,7 +98,10 @@ class SignUpEvent extends ApisBlocEvent {
         city,
         country,
         pinCode,
-        gender
+        gender,
+        onboardingId,
+        dateOfBirth,
+        nationality
       ];
 }
 
@@ -970,6 +998,68 @@ class ChangePasswordEvent extends ApisBlocEvent {
 
   @override
   List<Object?> get props => [oldPassword, newPassword];
+}
+
+class InitiatePasswordResetEvent extends ApisBlocEvent {
+  final String email;
+
+  InitiatePasswordResetEvent({required this.email});
+
+  @override
+  List<Object?> get props => [email];
+}
+
+class CompletePasswordResetEvent extends ApisBlocEvent {
+  final String email;
+  final String otp;
+  final String newPassword;
+
+  CompletePasswordResetEvent(
+      {required this.email, required this.otp, required this.newPassword});
+
+  @override
+  List<Object?> get props => [email, otp, newPassword];
+}
+
+class ChangeTransactionPinEvent extends ApisBlocEvent {
+  final String username;
+  final String currentPin;
+  final String newPin;
+
+  ChangeTransactionPinEvent({
+    required this.username,
+    required this.currentPin,
+    required this.newPin,
+  });
+
+  @override
+  List<Object?> get props => [username, currentPin, newPin];
+}
+
+class InitiateForgotPinEvent extends ApisBlocEvent {
+  final String username;
+  InitiateForgotPinEvent({required this.username});
+
+  @override
+  List<Object?> get props => [username];
+}
+
+class ValidatePinResetOtpEvent extends ApisBlocEvent {
+  final String username;
+  final String otp;
+  ValidatePinResetOtpEvent({required this.username, required this.otp});
+
+  @override
+  List<Object?> get props => [username, otp];
+}
+
+class SetPinEvent extends ApisBlocEvent {
+  final String username;
+  final String newPin;
+  SetPinEvent({required this.username, required this.newPin});
+
+  @override
+  List<Object?> get props => [username, newPin];
 }
 
 class AddBeneficiaryEvent extends ApisBlocEvent {

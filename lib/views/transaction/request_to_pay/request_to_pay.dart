@@ -137,26 +137,49 @@ class _RequestToPayScreenState extends State<RequestToPayScreen>
                   bloc: beneficiaryListBloc,
                   listener: (context, state) {
                     if (state is GetBeneficiaryListState) {
-                      if (state.value.code == 200) {
-                        var newBeneficiaryList =
-                            state.value.data?.transactionlist ?? [];
+                      if (state.value.isSuccess) {
+                        var newBeneficiaryList = state.value.beneficiaryList
+                            .map((e) => BankAccount(
+                                  id: e.beneficiaryAccountNo.isNotEmpty
+                                      ? e.beneficiaryAccountNo
+                                      : e.id,
+                                  accountRole: "BANK",
+                                  beneficiaryname: e.beneficiaryName,
+                                  accountnumber: e.beneficiaryAccountNo,
+                                  bankname: e.beneficiaryBankName,
+                                  bankcode: e.beneficiaryBankCode,
+                                  userType: e.beneficiaryBankName,
+                                  walletPhonenumber: null,
+                                  phoneCode: null,
+                                  verifystatus: null,
+                                  accountstatus: null,
+                                  primaryaccount: null,
+                                  createdAt: null,
+                                  updatedAt: null,
+                                  v: null,
+                                  clientId: null,
+                                  logo: null,
+                                  merchantId: null,
+                                  bctpayCustomerId: null,
+                                  customerId: e.id,
+                                ))
+                            .toList();
                         if (newBeneficiaryList.isNotEmpty) {
                           beneficiaryList.addAll(newBeneficiaryList);
                           page++;
                         }
                         loadingBloc.add(SelectBoolEvent(false));
-                      } else if (state.value.code ==
-                          HTTPResponseStatusCodes.sessionExpireCode) {
-                        sessionExpired(state.value.message, context);
+                      } else {
+                        loadingBloc.add(SelectBoolEvent(false));
+                        showFailedDialog(state.value.responseMessage, context);
                       }
                     }
                     if (state is AddBeneficiaryState) {
-                      if (state.value.code == 200) {
+                      if (state.value.isSuccess) {
                         beneficiaryList.clear();
                         page = 1;
                         showSuccessDialog(state.value.message, context);
-                      } else if (state.value.code ==
-                          HTTPResponseStatusCodes.sessionExpireCode) {
+                      } else if (state.value.isSessionExpired) {
                         sessionExpired(state.value.message, context);
                       } else {
                         showFailedDialog(state.value.message, context);

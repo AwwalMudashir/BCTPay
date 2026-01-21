@@ -5,6 +5,13 @@ import 'package:bctpay/views/transaction/send_bank_summary.dart';
 import 'package:bctpay/views/transaction/send_bank_enter_pin.dart';
 import 'package:bctpay/views/transaction/send_bank_success.dart';
 import 'package:bctpay/views/transaction/send_options.dart';
+import 'package:bctpay/views/transaction/send_mobile_money.dart';
+import 'package:bctpay/views/transaction/receive_money/receive_money_screen.dart';
+import 'package:bctpay/views/transaction/qr/my_qr_screen.dart';
+import 'package:bctpay/views/transaction/payment_link/generate_payment_link_screen.dart';
+import 'package:bctpay/views/auth/signup_otp.dart';
+import 'package:bctpay/views/user/change_pin.dart';
+import 'package:bctpay/views/user/forgot_pin.dart';
 
 class AppRoutes {
   static const String splash = '/';
@@ -12,6 +19,7 @@ class AppRoutes {
   static const String bottombar = '/bottombar';
   static const String login = '/login';
   static const String signup = '/signup';
+  static const String signupOtp = '/signupOtp';
   static const String otp = '/otp';
   static const String forgot = '/forgot';
   static const String forgotOTPVerification = '/forgotOTPVerification';
@@ -37,6 +45,8 @@ class AppRoutes {
   static const String qrscan = '/qrscan';
   static const String updateProfile = '/updateProfile';
   static const String changePassword = '/changePassword';
+  static const String changePin = '/changePin';
+  static const String forgotPin = '/forgotPin';
   static const String notifications = '/notifications';
   static const String notificationDetail = '/notificationDetail';
   static const String contactUs = '/contactUs';
@@ -73,6 +83,9 @@ class AppRoutes {
       "/kycIdentityVerificationDetails";
   static const String primaryAccountHistory = "/primaryAccountHistory";
   static const String paymentLinkScreen = "/paymentLinkScreen";
+  static const String receiveMoney = "/receiveMoney";
+  static const String generatePaymentLink = "/generatePaymentLink";
+  static const String myQr = "/myQr";
   static const String videoPlayer = "/videoPlayer";
   static const String faq = "/faq";
   static const String sendBankTransfer = "/sendBankTransfer";
@@ -81,6 +94,7 @@ class AppRoutes {
   static const String sendBankSuccess = "/sendBankSuccess";
   static const String sendOptions = "/sendOptions";
   static const String sendBeneficiaries = "/sendBeneficiaries";
+  static const String sendMobileMoney = "/sendMobileMoney";
 }
 
 Map<String, Widget Function(BuildContext)> routes = {
@@ -89,6 +103,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   AppRoutes.bottombar: (context) => const BottomNavigation(),
   AppRoutes.login: (context) => const LoginScreen(),
   AppRoutes.signup: (context) => const SignUpScreen(),
+  AppRoutes.signupOtp: (context) => const SignupOtpScreen(),
   AppRoutes.otp: (context) => const OTPScreen(),
   AppRoutes.forgot: (context) => const ForgotPasswordScreen(),
   AppRoutes.forgotOTPVerification: (context) =>
@@ -118,6 +133,8 @@ Map<String, Widget Function(BuildContext)> routes = {
   AppRoutes.qrscan: (context) => const QRScanScreen(),
   AppRoutes.updateProfile: (context) => const UpdateProfile(),
   AppRoutes.changePassword: (context) => const ChangePassword(),
+  AppRoutes.changePin: (context) => const ChangePinScreen(),
+  AppRoutes.forgotPin: (context) => const ForgotPinScreen(),
   AppRoutes.notifications: (context) => const NotificationScreen(),
   AppRoutes.notificationDetail: (context) => const NotificationDetail(),
   AppRoutes.contactUs: (context) => const ContactUs(),
@@ -157,10 +174,15 @@ Map<String, Widget Function(BuildContext)> routes = {
   AppRoutes.paymentLinkScreen: (context) => const PaymentLinkScreen(),
   AppRoutes.videoPlayer: (context) => const VideoPlayer1(),
   AppRoutes.faq: (context) => const FAQsScreen(),
+  AppRoutes.generatePaymentLink: (context) =>
+      const GeneratePaymentLinkScreen(),
+  AppRoutes.receiveMoney: (context) => const ReceiveMoneyScreen(),
+  AppRoutes.myQr: (context) => const MyQrScreen(),
   AppRoutes.sendBankTransfer: (context) => const SendBankTransferScreen(),
   AppRoutes.sendBankSummary: (context) => const SendBankSummaryScreen(),
   AppRoutes.sendBankEnterPin: (context) => const SendBankEnterPinScreen(),
   AppRoutes.sendBankSuccess: (context) => const SendBankSuccessScreen(),
   AppRoutes.sendOptions: (context) => const SendOptionsScreen(),
   AppRoutes.sendBeneficiaries: (context) => const SendBeneficiariesScreen(),
+  AppRoutes.sendMobileMoney: (context) => const SendMobileMoneyScreen(),
 };

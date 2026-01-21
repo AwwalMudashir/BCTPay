@@ -28,13 +28,13 @@ class _CountryPickerViewState extends State<CountryPickerView> {
       bloc: countryListBloc,
       listener: (context, countryListBlocState) {
         if (countryListBlocState is CountryListState) {
-          var countries = countryListBlocState.value.data ?? [];
+          var countries = countryListBlocState.value.data;
           filteredCountries = countries;
         }
       },
       builder: (context, countryListBlocState) {
         if (countryListBlocState is CountryListState) {
-          var countries = countryListBlocState.value.data ?? [];
+          var countries = countryListBlocState.value.data;
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -46,9 +46,10 @@ class _CountryPickerViewState extends State<CountryPickerView> {
                   onChanged: (txt) {
                     filteredCountries = countries
                         .where((country) =>
-                            country.countryName.toLowerCase().contains(
-                                searchController.text.toLowerCase()) ||
-                            ("+${country.phoneCode!}")
+                    country.countryName
+                        .toLowerCase()
+                        .contains(searchController.text.toLowerCase()) ||
+                    ("+${country.phoneCode}")
                                 .toLowerCase()
                                 .contains(searchController.text.toLowerCase()))
                         .toList();
@@ -93,15 +94,9 @@ class CountryListItem extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            CachedNetworkImage(
-              imageUrl: baseUrlCountryFlag + country.countryFlag,
-              height: 30,
-              width: 30,
-              progressIndicatorBuilder: progressIndicatorBuilder,
-              errorWidget: (c, o, s) => const Icon(
-                Icons.error,
-                color: Colors.black,
-              ),
+            _FlagThumb(
+              flagPath: country.countryFlag,
+              countryCode: country.countryCode,
             ),
             const SizedBox(
               width: 10,
@@ -118,7 +113,7 @@ class CountryListItem extends StatelessWidget {
               width: 10,
             ),
             Text(
-              "+${country.phoneCode ?? "?"}",
+              "+${country.phoneCode}",
               style: const TextStyle(
                 fontSize: 18,
                 color: themeLogoColorOrange,
@@ -126,6 +121,40 @@ class CountryListItem extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _FlagThumb extends StatelessWidget {
+  final String flagPath;
+  final String countryCode;
+  const _FlagThumb({required this.flagPath, required this.countryCode});
+
+  @override
+  Widget build(BuildContext context) {
+    if (countryCode.isNotEmpty) {
+      return CountryFlag.fromCountryCode(
+        countryCode,
+        height: 30,
+        width: 30,
+        shape: const RoundedRectangle(4),
+      );
+    }
+    final fullUrl = flagPath.startsWith('http')
+        ? flagPath
+        : (baseUrlCountryFlag.isNotEmpty ? "$baseUrlCountryFlag$flagPath" : "");
+    if (fullUrl.isEmpty) {
+      return const Icon(Icons.flag, color: Colors.grey);
+    }
+    return CachedNetworkImage(
+      imageUrl: fullUrl,
+      height: 30,
+      width: 30,
+      progressIndicatorBuilder: progressIndicatorBuilder,
+      errorWidget: (c, o, s) => const Icon(
+        Icons.flag,
+        color: Colors.grey,
       ),
     );
   }

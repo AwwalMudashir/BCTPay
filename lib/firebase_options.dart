@@ -1,0 +1,1 @@
+export 'data/firebase/firebase_option.dart';

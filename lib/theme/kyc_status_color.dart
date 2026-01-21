@@ -18,7 +18,7 @@ Color getKYCStatusColor(KYCStatus? kycStatus) {
       return Colors.red;
     case KYCStatus.expired:
       return Colors.red;
-    case null:
+    default:
       return Colors.red;
   }
 }

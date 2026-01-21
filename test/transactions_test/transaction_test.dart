@@ -21,7 +21,7 @@ void main() async {
     await dotenv.load(fileName: ".env.development");
     SharedPreferences.setMockInitialValues({});
 
-    selectedCountry = (await getCountryList()).data?.firstOrNull;
+    selectedCountry = (await getCountryList()).data.firstOrNull;
 
     var res = await login(
         loginBody: LoginBody(

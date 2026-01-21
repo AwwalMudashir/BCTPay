@@ -26,6 +26,7 @@ class SharedPreferenceHelper {
   static const String _adminLogoForWhiteThemeKey = "adminLogoForWhiteThemeKey";
   static const String _line1 = "line1";
   static const String _line2 = "line2";
+  static const String _genderKey = "gender";
 
   static Future saveLoginData(LoginResponse loginResponse) async {
     var pref = await SharedPreferences.getInstance();
@@ -33,6 +34,27 @@ class SharedPreferenceHelper {
     await pref.setString(_accessTokenKey, loginResponse.data!.token);
     await pref.setString(
         _kongServerTokenKey, loginResponse.data?.kongServerToken ?? "");
+    // Persist basic identity details from login payload (fallback to tokens-only if absent)
+    if (loginResponse.data?.email != null) {
+      await pref.setString(_emailKey, loginResponse.data!.email ?? "");
+    }
+    if (loginResponse.data?.mobileNo != null) {
+      await pref.setString(_phoneKey, loginResponse.data!.mobileNo ?? "");
+    }
+    if (loginResponse.data?.customerId != null) {
+      await pref.setString(_customerIdKey, loginResponse.data!.customerId ?? "");
+    }
+    if (loginResponse.data?.country != null) {
+      await pref.setString(_countryKey, loginResponse.data!.country ?? "");
+    }
+    if (loginResponse.data?.gender != null) {
+      await pref.setString(_genderKey, loginResponse.data!.gender ?? "");
+    }
+    final userName =
+        loginResponse.data?.fullname ?? loginResponse.data?.username ?? "";
+    if (userName.isNotEmpty) {
+      await pref.setString(_usernameKey, userName);
+    }
   }
 
   static Future saveLoginCredentials(
@@ -84,6 +106,9 @@ class SharedPreferenceHelper {
           profileResponse.data!.adminLogoForWhiteTheme ?? "");
       await pref.setString(_line1, profileResponse.data!.line1 ?? "");
       await pref.setString(_line2, profileResponse.data!.line2 ?? "");
+      if (profileResponse.data!.gender != null) {
+        await pref.setString(_genderKey, profileResponse.data!.gender ?? "");
+      }
     }
   }
 
@@ -226,5 +251,10 @@ class SharedPreferenceHelper {
   static Future<String?> getLine2() async {
     var pref = await SharedPreferences.getInstance();
     return pref.getString(_line2);
+  }
+
+  static Future<String?> getGender() async {
+    var pref = await SharedPreferences.getInstance();
+    return pref.getString(_genderKey);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:bctpay/data/models/transactions/beneficiary/beneficiary_fetch_response.dart';
 import 'package:bctpay/globals/index.dart';
 
 abstract class ApisBlocState extends Equatable {
@@ -182,6 +183,24 @@ class CountryListState extends ApisBlocState {
   final CountryListResponse value;
 
   CountryListState(this.value);
+
+  @override
+  List<Object?> get props => [value];
+}
+
+class VerifyRegistrationOtpState extends ApisBlocState {
+  final Response value;
+
+  VerifyRegistrationOtpState(this.value);
+
+  @override
+  List<Object?> get props => [value];
+}
+
+class ResendRegistrationOtpState extends ApisBlocState {
+  final Response value;
+
+  ResendRegistrationOtpState(this.value);
 
   @override
   List<Object?> get props => [value];
@@ -410,6 +429,56 @@ class ChangePasswordState extends ApisBlocState {
   List<Object?> get props => [value];
 }
 
+class InitiatePasswordResetState extends ApisBlocState {
+  final Response value;
+
+  InitiatePasswordResetState(this.value);
+
+  @override
+  List<Object?> get props => [value];
+}
+
+class CompletePasswordResetState extends ApisBlocState {
+  final Response value;
+
+  CompletePasswordResetState(this.value);
+
+  @override
+  List<Object?> get props => [value];
+}
+
+class ChangeTransactionPinState extends ApisBlocState {
+  final Response value;
+  ChangeTransactionPinState(this.value);
+
+  @override
+  List<Object?> get props => [value];
+}
+
+class InitiateForgotPinState extends ApisBlocState {
+  final Response value;
+  InitiateForgotPinState(this.value);
+
+  @override
+  List<Object?> get props => [value];
+}
+
+class ValidatePinResetOtpState extends ApisBlocState {
+  final Response value;
+  ValidatePinResetOtpState(this.value);
+
+  @override
+  List<Object?> get props => [value];
+}
+
+class SetPinState extends ApisBlocState {
+  final Response value;
+  SetPinState(this.value);
+
+  @override
+  List<Object?> get props => [value];
+}
+
 class AddBeneficiaryState extends ApisBlocState {
   final AddBeneficiaryResponse value;
 
@@ -429,7 +498,7 @@ class UpdateBeneficiaryState extends ApisBlocState {
 }
 
 class GetBeneficiaryListState extends ApisBlocState {
-  final BeneficiaryListResponse value;
+  final BeneficiaryFetchResponse value;
 
   GetBeneficiaryListState(this.value);
 

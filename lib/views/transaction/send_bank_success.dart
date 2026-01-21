@@ -7,7 +7,8 @@ class SendBankSuccessScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     final args = (ModalRoute.of(context)?.settings.arguments as Map?) ?? {};
-    final amount = args["amount"] ?? "₦0.00";
+    final amount =
+        args["amountDisplay"] ?? args["amount"] ?? "₦0.00";
     final responseMessage = args["responseMessage"] ?? "Payment complete";
     final refNo = args["refNo"] ?? "";
     final status = args["status"] ?? "";
@@ -15,6 +16,7 @@ class SendBankSuccessScreen extends StatelessWidget {
     final accountNumber = args["accountNumber"] ?? "";
     final accountName = args["accountName"] ?? "";
     final note = args["note"] ?? "Nil";
+    final walletLabel = args["walletLabel"] ?? args["currency"] ?? "NGN";
 
     return Scaffold(
       appBar: AppBar(
@@ -23,12 +25,12 @@ class SendBankSuccessScreen extends StatelessWidget {
         foregroundColor: Colors.black,
         leading: IconButton(
           icon: const Icon(Icons.close),
-          onPressed: () => Navigator.popUntil(
-              context, ModalRoute.withName(AppRoutes.dashboard)),
+          onPressed: () => Navigator.pushNamedAndRemoveUntil(
+              context, AppRoutes.dashboard, (route) => false),
         ),
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Column(
             children: [
@@ -60,7 +62,7 @@ class SendBankSuccessScreen extends StatelessWidget {
                 _infoRow(appLocalizations(context).bankName, bank),
                 _infoRow(appLocalizations(context).accountNumber, accountNumber),
                 _infoRow(appLocalizations(context).accountName, accountName),
-                _infoRow(appLocalizations(context).walletLabel, "NGN"),
+                _infoRow(appLocalizations(context).walletLabel, walletLabel),
                 _infoRow(appLocalizations(context).narration, note),
                 _infoRow(appLocalizations(context).transferFee, "₦0.00"),
               ]),
@@ -69,13 +71,13 @@ class SendBankSuccessScreen extends StatelessWidget {
                   label: appLocalizations(context).category,
                   value: appLocalizations(context).orders,
                   trailing: Icons.expand_more),
-              const Spacer(),
+              const SizedBox(height: 24),
               Row(
                 children: [
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () => Navigator.popUntil(
-                          context, ModalRoute.withName(AppRoutes.dashboard)),
+                      onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                          context, AppRoutes.dashboard, (route) => false),
                       style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
@@ -101,7 +103,7 @@ class SendBankSuccessScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
             ],
           ),
         ),

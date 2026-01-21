@@ -326,9 +326,8 @@ class _ContactsListState extends State<ContactsList> {
               selectPhoneCountryBloc:
                   widget.selectPhoneCountryBloc ?? selectPhoneCountryBloc)
           .then((country) {
-        phoneController.text = phone.substring(country?.phoneCode != null
-            ? ((country?.phoneCode?.length ?? 0))
-            : 0);
+        final dialLen = (country?.phoneCode ?? "").length;
+        phoneController.text = phone.substring(dialLen);
         if (country != null) {
           selectedPhoneCountry = country;
         }

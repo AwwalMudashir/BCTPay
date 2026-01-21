@@ -53,7 +53,7 @@ class ProfileDetails extends StatelessWidget {
                   AccountMenu(
                     enableBorder: true,
                     title: appLocalizations(context).editProfile,
-                    icon: Icon(Icons.edit_outlined),
+                    icon: const Icon(Icons.edit_note_rounded),
                     onTap: () {
                       Navigator.of(context).pushNamed(AppRoutes.updateProfile);
                     },
@@ -61,9 +61,25 @@ class ProfileDetails extends StatelessWidget {
                   AccountMenu(
                     enableBorder: true,
                     title: appLocalizations(context).changePassword,
-                    icon: Icon(Icons.lock_reset_outlined),
+                    icon: const Icon(Icons.lock_person_outlined),
                     onTap: () {
                       Navigator.of(context).pushNamed(AppRoutes.changePassword);
+                    },
+                  ),
+                  AccountMenu(
+                    enableBorder: true,
+                    title: "Change PIN",
+                    icon: const Icon(Icons.key_rounded),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(AppRoutes.changePin);
+                    },
+                  ),
+                  AccountMenu(
+                    enableBorder: true,
+                    title: "Forgot PIN",
+                    icon: const Icon(Icons.key_off_outlined),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(AppRoutes.forgotPin);
                     },
                   ),
                   AccountMenu(
@@ -124,47 +140,96 @@ class ProfileDetails extends StatelessWidget {
       builder: (context, state) {
         if (state is SharedPrefGetUserDetailState) {
           var user = state.user;
-          return Column(
-            children: [
-              Text(
-                user.userName,
-                style: textTheme(context).displayLarge,
+          return Container(
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              gradient: const LinearGradient(
+                colors: [Colors.white, Color(0xFFF4F7FB)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.mail_outline_rounded,
-                    color: themeLogoColorOrange,
-                    size: 20,
-                  ),
-                  5.width,
-                  Text(
-                    user.email,
-                    style: textTheme(context).bodySmall,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CountryFlag.fromCountryCode(
-                    selectedCountry?.countryCode ?? "",
-                    height: 16,
-                    width: 25,
-                  ),
-                  5.width,
-                  Text(user.phone),
-                ],
-              ),
-              CommonAddressView(
-                showAddressIcon: true,
-                line1: user.line1,
-                line2: user.line2,
-                city: user.city,
-                country: user.countryName,
-              ),
-            ],
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.06),
+                    blurRadius: 12,
+                    offset: const Offset(0, 6))
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ProfilePicView(
+                      dimension: 70,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            user.userName,
+                            style: textTheme(context).titleLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87),
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              const Icon(Icons.alternate_email_rounded,
+                                  size: 16, color: Colors.black54),
+                              6.width,
+                              Expanded(
+                                child: Text(
+                                  user.email,
+                                  style: textTheme(context)
+                                      .bodySmall
+                                      ?.copyWith(color: Colors.black54),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              CountryFlag.fromCountryCode(
+                                selectedCountry?.countryCode ?? "",
+                                height: 16,
+                                width: 25,
+                              ),
+                              6.width,
+                              Text(
+                                user.phone,
+                                style: textTheme(context)
+                                    .bodySmall
+                                    ?.copyWith(color: Colors.black54),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Divider(color: Colors.black.withValues(alpha: 0.08)),
+                const SizedBox(height: 8),
+                CommonAddressView(
+                  showAddressIcon: true,
+                  line1: user.line1,
+                  line2: user.line2,
+                  city: user.city,
+                  country: user.countryName,
+                ),
+              ],
+            ),
           );
         }
         return Loader();

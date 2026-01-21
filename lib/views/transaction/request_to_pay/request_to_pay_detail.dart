@@ -186,7 +186,7 @@ class _RequestToPayDetailState extends State<RequestToPayDetail> {
                                         args.receivableAccount!.id,
                                     txnNote: noteController.text,
                                     requestReceiverPhoneCode:
-                                        "+${phoneCode ?? selectedCountry!.phoneCode!}",
+                                        "+${phoneCode ?? selectedCountry?.phoneCode ?? ""}",
                                     requestReceiverPhoneNumber: phoneCode ==
                                             null
                                         ? args.requestToContact!.phones.first

@@ -1,5 +1,6 @@
 import 'package:bctpay/globals/index.dart';
 
+// Custom text field widget with enhanced styling and full parameter support
 class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String? labelText;

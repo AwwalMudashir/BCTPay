@@ -1,61 +1,41 @@
 class CountryListResponse {
-  final int? code;
-  final List<CountryData>? data;
-  final String? message;
-  final bool? success;
-  final String? error;
+  final String? code;
+  final String? desc;
+  final List<CountryData> data;
 
   CountryListResponse({
     required this.code,
+    required this.desc,
     required this.data,
-    required this.message,
-    required this.success,
-    required this.error,
   });
 
   factory CountryListResponse.fromJson(Map<String, dynamic> json) =>
       CountryListResponse(
-        code: json["code"],
-        data: json["data"] == null
-            ? null
-            : List<CountryData>.from(
-                json["data"].map((x) => CountryData.fromJson(x))),
-        message: json["message"],
-        success: json["success"],
-        error: json["error"],
+        code: json["code"]?.toString(),
+        desc: json["desc"]?.toString(),
+        data: (json["data"] as List? ?? [])
+            .map((x) => CountryData.fromJson(x))
+            .toList(),
       );
 
   Map<String, dynamic> toJson() => {
         "code": code,
-        "data": data == null
-            ? null
-            : List<dynamic>.from(data!.map((x) => x.toJson())),
-        "message": message,
-        "success": success,
-        "error": error,
+        "desc": desc,
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
       };
 }
 
 class CountryData {
-  final String id;
-  final String adminId;
   final String countryName;
   final String countryCode;
   final String countryFlag;
-  final String? phoneCode;
-  final String? currencyName;
+  final String phoneCode;
+  final String currencyName;
   final String currencyCode;
   final String currencySymbol;
   final String timeZone;
-  final String status;
-  final String writePermission;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final int v;
 
   CountryData({
-    required this.id,
-    required this.adminId,
     required this.countryName,
     required this.countryCode,
     required this.countryFlag,
@@ -64,34 +44,20 @@ class CountryData {
     required this.currencyCode,
     required this.currencySymbol,
     required this.timeZone,
-    required this.status,
-    required this.writePermission,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
   });
 
   factory CountryData.fromJson(Map<String, dynamic> json) => CountryData(
-        id: json["_id"],
-        adminId: json["adminId"],
-        countryName: json["country_name"],
-        countryCode: json["country_code"],
-        countryFlag: json["country_flag"],
-        phoneCode: json["phone_code"],
-        currencyName: json["currency_name"],
-        currencyCode: json["currency_code"],
-        currencySymbol: json["currency_symbol"],
-        timeZone: json["time_zone"],
-        status: json["status"],
-        writePermission: json["write_permission"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
+        countryName: json["country_name"]?.toString() ?? "",
+        countryCode: json["country_code"]?.toString() ?? "",
+        countryFlag: json["country_flag"]?.toString() ?? "",
+        phoneCode: json["phone_code"]?.toString() ?? "",
+        currencyName: json["currency_name"]?.toString() ?? "",
+        currencyCode: json["currency_code"]?.toString() ?? "",
+        currencySymbol: json["currency_symbol"]?.toString() ?? "",
+        timeZone: json["time_zone"]?.toString() ?? "",
       );
 
   Map<String, dynamic> toJson() => {
-        "_id": id,
-        "adminId": adminId,
         "country_name": countryName,
         "country_code": countryCode,
         "country_flag": countryFlag,
@@ -100,11 +66,6 @@ class CountryData {
         "currency_code": currencyCode,
         "currency_symbol": currencySymbol,
         "time_zone": timeZone,
-        "status": status,
-        "write_permission": writePermission,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "__v": v,
       };
 }
 

@@ -9,511 +9,474 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  var fnameController = TextEditingController();
-  var lnameController = TextEditingController();
-  var emailController = TextEditingController();
-  var phoneController = TextEditingController();
-  var passwordController = TextEditingController();
-  var confirmPasswordController = TextEditingController();
+  final fnameController = TextEditingController();
+  final lnameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final dobController = TextEditingController();
+  final nationalityController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
   final ApisBloc signupBloc = ApisBloc(ApisBlocInitialState());
-
   final passwordVisiblityBloc = SelectionBloc(SelectBoolState(true));
   final confirmPasswordVisiblityBloc = SelectionBloc(SelectBoolState(true));
-  CountryData? selectedCountryPhoneCode = selectedCountry;
-  var selectGenderBloc = SelectionBloc(SelectStringState(null));
-  String? selectedGender;
+  final selectGenderBloc = SelectionBloc(SelectStringState(null));
   final tncBloc = SelectionBloc(SelectBoolState(false));
+
+  CountryData? selectedCountryPhoneCode = selectedCountry;
+  String? selectedGender;
   bool isTncAccepted = false;
 
   @override
-  Widget build(BuildContext context) {
-    var textTheme = Theme.of(context).textTheme;
+  void dispose() {
+    fnameController.dispose();
+    lnameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    dobController.dispose();
+    nationalityController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    signupBloc.close();
+    super.dispose();
+  }
 
-    return Scaffold(
-      appBar: const CustomAppBar(
-        centerTitle: true,
-        title: "",
-        titleWidget: AppBarTitleWidget(),
-        actions: [LanguageWidget()],
+  Widget _buildTextField({
+  required TextEditingController controller,
+  required String label,
+  TextInputType? keyboardType,
+  bool obscureText = false,
+  IconData? prefixIcon,
+  IconData? suffixIcon,
+  VoidCallback? onSuffixTap,
+  String? Function(String?)? validator,
+}) {
+  return TextFormField(
+    controller: controller,
+    keyboardType: keyboardType,
+    obscureText: obscureText,
+    style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
+    validator: validator,
+    decoration: InputDecoration(
+      labelText: label,
+      labelStyle: Theme.of(context)
+          .textTheme
+          .labelLarge
+          ?.copyWith(color: Colors.grey.shade700),
+      prefixIcon:
+          prefixIcon != null ? Icon(prefixIcon, color: Colors.grey.shade600) : null,
+      suffixIcon: suffixIcon != null
+          ? IconButton(
+              icon: Icon(suffixIcon, color: Colors.grey.shade600),
+              onPressed: onSuffixTap,
+            )
+          : null,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: Colors.grey.shade300),
       ),
-      backgroundColor: backgroundColor,
-      body: SafeArea(
-        child: BlocConsumer(
-            bloc: signupBloc,
-            listener: (context, state) {
-              if (state is SignUpState) {
-                if (state.value.code == 200) {
-                  showSuccessDialog(
-                    appLocalizations(context)
-                        .congratulationsYourAccountHasBeenSuccessfullyCreated,
-                    context,
-                    redirectToLogin: true,
-                    dismissOnBackKeyPress: false,
-                    dismissOnTouchOutside: false,
-                  );
-                } else {
-                  showFailedDialog(
-                      state.value.message ?? state.value.error ?? "", context);
-                }
-              }
-              if (state is ApisBlocErrorState) {
-                showFailedDialog(state.message, context);
-              }
-            },
-            builder: (context, state) {
-              return ModalProgressHUD(
-                inAsyncCall: state is ApisBlocLoadingState,
-                progressIndicator: const Loader(),
-                child: SingleChildScrollView(
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  appLocalizations(context).signUp,
-                                  style: textTheme.displayMedium,
-                                  textAlign: TextAlign.center,
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)!
-                                      .pleaseSignUpToContinue,
-                                  style: textTheme.bodyMedium
-                                      ?.copyWith(fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: [
-                              Text(appLocalizations(context).gender),
-                              Expanded(
-                                child: BlocConsumer(
-                                    bloc: selectGenderBloc,
-                                    listener: (context, state) {
-                                      if (state is SelectStringState) {}
-                                    },
-                                    builder: (context, state) {
-                                      if (state is SelectStringState) {
-                                        return Theme(
-                                          data: ThemeData(
-                                              unselectedWidgetColor:
-                                                  Colors.white),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                flex: 4,
-                                                child: RadioListTile(
-                                                  contentPadding:
-                                                      EdgeInsets.zero,
-                                                  visualDensity:
-                                                      VisualDensity.compact,
-                                                  fillColor:
-                                                      WidgetStatePropertyAll(
-                                                    isDarkMode(context)
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                  ),
-                                                  title: Text(
-                                                    appLocalizations(context)
-                                                        .male,
-                                                    style: textTheme
-                                                        .bodyLarge!
-                                                        .copyWith(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                  ),
-                                                  value: "MALE",
-                                                  groupValue: state.value,
-                                                  onChanged: (value) {
-                                                    selectedGender = value!;
-                                                    selectGenderBloc.add(
-                                                        SelectStringEvent(
-                                                            selectedGender));
-                                                  },
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 5,
-                                                child: RadioListTile(
-                                                  contentPadding:
-                                                      EdgeInsets.zero,
-                                                  visualDensity:
-                                                      VisualDensity.compact,
-                                                  fillColor:
-                                                      WidgetStatePropertyAll(
-                                                    isDarkMode(context)
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                  ),
-                                                  title: Text(
-                                                    appLocalizations(context)
-                                                        .female,
-                                                    style: textTheme
-                                                        .bodyLarge!
-                                                        .copyWith(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                  ),
-                                                  value: "FEMALE",
-                                                  groupValue: state.value,
-                                                  onChanged: (value) {
-                                                    selectedGender = value!;
-                                                    selectGenderBloc.add(
-                                                        SelectStringEvent(
-                                                            selectedGender));
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      }
-                                      return const Loader();
-                                    }),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          CustomTextField(
-                            controller: fnameController,
-                            labelText:
-                                "${appLocalizations(context).firstName} *",
-                            hintText:
-                                appLocalizations(context).enterYourFirstName,
-                            prefix: Image.asset(
-                              Assets.assetsImagesPerson1,
-                              scale: textFieldSuffixScale,
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return appLocalizations(context)
-                                    .pleaseEnterYourFirstName;
-                              } else if (!specialCharRegex.hasMatch(value)) {
-                                return appLocalizations(context)
-                                    .pleaseEnterValidValue;
-                              }
-                              return null;
-                            },
-                          ),
-                          CustomTextField(
-                            controller: lnameController,
-                            labelText: appLocalizations(context).lastName,
-                            hintText:
-                                appLocalizations(context).enterYourLastName,
-                            prefix: Image.asset(
-                              Assets.assetsImagesPerson1,
-                              scale: textFieldSuffixScale,
-                            ),
-                            validator: (p0) {
-                              if (p0!.isEmpty) {
-                                return null;
-                              } else if (!specialCharRegex.hasMatch(p0)) {
-                                return appLocalizations(context)
-                                    .pleaseEnterValidValue;
-                              }
-                              return null;
-                            },
-                          ),
-                          CustomTextField(
-                            controller: emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            labelText:
-                                "${appLocalizations(context).emailAddress} *",
-                            hintText:
-                                appLocalizations(context).enterEmailAddress,
-                            prefix: Image.asset(
-                              Assets.assetsImagesEmail,
-                              scale: textFieldSuffixScale,
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return appLocalizations(context)
-                                    .pleaseEnterYourEmailAddress;
-                              } else if (!validateEmail(value)) {
-                                return appLocalizations(context)
-                                    .pleaseEnterYourValidEmailAddress;
-                              }
-                              return null;
-                            },
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: CustomTextField(
-                                  controller: phoneController,
-                                  keyboardType: TextInputType.number,
-                                  labelText:
-                                      "${AppLocalizations.of(context)!.mobileNumber} *",
-                                  hintText: AppLocalizations.of(context)!
-                                      .enterMobileNumber,
-                                  onChanged: seperatePhoneAndDialCode,
-                                  prefixWidget:
-                                      const CountryPickerTxtFieldPrefix(),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return appLocalizations(context)
-                                          .pleaseEnterYourMobileNumber;
-                                    }
-                                    if (selectedCountryPhoneCode?.phoneCode ==
-                                            "224" &&
-                                        !gnPhoneRegx.hasMatch(value)) {
-                                      return appLocalizations(context)
-                                          .pleaseEnterValidMobileNumber;
-                                    } else if (!validatePhone(value)) {
-                                      return appLocalizations(context)
-                                          .pleaseEnterValidMobileNumber;
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          BlocBuilder(
-                              bloc: passwordVisiblityBloc,
-                              builder: (context, pwdVisiblityState) {
-                                if (pwdVisiblityState is SelectBoolState) {
-                                  return CustomTextField(
-                                    controller: passwordController,
-                                    obscureText: pwdVisiblityState.value,
-                                    labelText:
-                                        "${appLocalizations(context).password} *",
-                                    hintText:
-                                        appLocalizations(context).enterPassword,
-                                    prefix: Image.asset(
-                                      Assets.assetsImagesKey,
-                                      scale: textFieldSuffixScale,
-                                    ),
-                                    suffix: InkWell(
-                                      onTap: () {
-                                        passwordVisiblityBloc.add(
-                                            SelectBoolEvent(
-                                                !pwdVisiblityState.value));
-                                      },
-                                      child: Icon(
-                                        pwdVisiblityState.value
-                                            ? Icons.remove_red_eye
-                                            : Icons.remove_red_eye_outlined,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return appLocalizations(context)
-                                            .pleaseEnterYourPassword;
-                                      }
-                                      if (!validatePassword(value)) {
-                                        return appLocalizations(context)
-                                            .includesALetterDigitAndSpecialCharacter;
-                                      }
-                                      return null;
-                                    },
-                                  );
-                                }
-                                return const Loader();
-                              }),
-                          BlocBuilder(
-                              bloc: confirmPasswordVisiblityBloc,
-                              builder: (context, confirmPwdVisiblityState) {
-                                if (confirmPwdVisiblityState
-                                    is SelectBoolState) {
-                                  return CustomTextField(
-                                    controller: confirmPasswordController,
-                                    obscureText: confirmPwdVisiblityState.value,
-                                    labelText:
-                                        "${appLocalizations(context).confirmPassword} *",
-                                    hintText: AppLocalizations.of(context)!
-                                        .enterConfirmPassword,
-                                    prefix: Image.asset(
-                                      Assets.assetsImagesKey,
-                                      scale: textFieldSuffixScale,
-                                    ),
-                                    suffix: InkWell(
-                                      onTap: () {
-                                        confirmPasswordVisiblityBloc.add(
-                                            SelectBoolEvent(
-                                                !confirmPwdVisiblityState
-                                                    .value));
-                                      },
-                                      child: Icon(
-                                        confirmPwdVisiblityState.value
-                                            ? Icons.remove_red_eye
-                                            : Icons.remove_red_eye_outlined,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return appLocalizations(context)
-                                            .pleaseEnterYourConfirmPassword;
-                                      }
-                                      if (value != passwordController.text) {
-                                        return appLocalizations(context)
-                                            .passwordIsNotMatching;
-                                      }
-                                      if (!validatePassword(value)) {
-                                        return appLocalizations(context)
-                                            .includesALetterDigitAndSpecialCharacter;
-                                      }
-                                      return null;
-                                    },
-                                  );
-                                }
-                                return const Loader();
-                              }),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  tncBloc.add(SelectBoolEvent(!isTncAccepted));
-                                },
-                                child: Row(
-                                  children: [
-                                    BlocConsumer(
-                                        bloc: tncBloc,
-                                        listener: (context, isRememberState) {
-                                          if (isRememberState
-                                              is SelectBoolState) {
-                                            isTncAccepted =
-                                                isRememberState.value;
-                                          }
-                                        },
-                                        builder: (context, isRememberState) {
-                                          if (isRememberState
-                                              is SelectBoolState) {
-                                            return Checkbox(
-                                              value: isRememberState.value,
-                                              onChanged: (value) {
-                                                tncBloc.add(
-                                                    SelectBoolEvent(value!));
-                                              },
-                                            );
-                                          }
-                                          return const Loader();
-                                        }),
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).pushNamed(
-                                            AppRoutes.webview,
-                                            arguments: CustomWebView(
-                                              isAvailable: true,
-                                              title: appLocalizations(context)
-                                                  .signupTnc,
-                                              url: termsAndConditionsUrl,
-                                            ));
-                                      },
-                                      child: Text(
-                                        appLocalizations(context)
-                                            .pleaseAcceptTermsAndConditions,
-                                        style: textTheme.bodyMedium?.copyWith(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          BlocConsumer(
-                              bloc: selectCountryBloc,
-                              listener: (context, state) {
-                                if (state is SelectCountryState) {
-                                  selectedCountryPhoneCode = state.countryData;
-                                  if (phoneController.text.contains(
-                                      selectedCountryPhoneCode?.phoneCode ??
-                                          "")) {
-                                    phoneController.text = phoneController.text
-                                        .replaceAll(
-                                            "+${selectedCountryPhoneCode?.phoneCode}",
-                                            "");
-                                  }
-                                }
-                              },
-                              builder: (context, state) {
-                                return CustomBtn(
-                                    onTap: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        if (selectedCountryPhoneCode != null) {
-                                          if (isTncAccepted) {
-                                            signupBloc.add(SignUpEvent(
-                                                email: emailController.text,
-                                                phoneCode:
-                                                    "+${selectedCountryPhoneCode?.phoneCode}",
-                                                phoneNumber:
-                                                    phoneController.text,
-                                                password:
-                                                    passwordController.text,
-                                                firstName: fnameController.text,
-                                                lastName: lnameController.text,
-                                                country:
-                                                    selectedCountryPhoneCode
-                                                        ?.id,
-                                                gender: selectedGender));
-                                          } else {
-                                            showToast(appLocalizations(context)
-                                                .pleaseAcceptTermsAndConditions);
-                                          }
-                                        } else {
-                                          showToast(appLocalizations(context)
-                                              .pleaseSelectCountryPhoneCode);
-                                        }
-                                      }
-                                    },
-                                    text: appLocalizations(context).signUp);
-                              }),
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, AppRoutes.login, (route) => false);
-                              },
-                              child: Wrap(
-                                children: [
-                                  Text(
-                                    "${appLocalizations(context).joinedUsBefore} ",
-                                    style: textTheme.bodyMedium,
-                                  ),
-                                  Text(
-                                    appLocalizations(context).loginNow,
-                                    style: textTheme.bodyMedium?.copyWith(
-                                      color: themeYellowColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ))
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: Colors.grey.shade300),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(
+          color: themeLogoColorBlue,
+          width: 1.2,
+        ),
+      ),
+      filled: true,
+      fillColor: Colors.white,
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+    ),
+  );
+}
+
+  void onSignupPressed() {
+    if (!_formKey.currentState!.validate()) return;
+
+    if (selectedGender == null) {
+      showFailedDialog("Please select gender", context);
+      return;
+    }
+
+    if (!isTncAccepted) {
+      showFailedDialog("Please accept terms and conditions", context);
+      return;
+    }
+
+    signupBloc.add(
+      SignUpEvent(
+        email: emailController.text,
+        phoneCode: selectedCountryPhoneCode?.phoneCode ?? "",
+        phoneNumber: phoneController.text,
+        password: passwordController.text,
+        firstName: fnameController.text,
+        gender: selectedGender,
       ),
     );
   }
+
+  Widget _genderOption(String label, String value, String? groupValue) {
+    final isSelected = value == groupValue;
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          selectedGender = value;
+          selectGenderBloc.add(SelectStringEvent(value));
+        },
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: isSelected
+                ? themeLogoColorBlue.withValues(alpha: 0.1)
+                : Colors.grey.shade100,
+            border: Border.all(
+              color: isSelected ? themeLogoColorBlue : Colors.grey.shade300,
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Center(
+            child: Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? themeLogoColorBlue : Colors.black87,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+@override
+Widget build(BuildContext context) {
+  final textTheme = Theme.of(context).textTheme;
+
+  return Scaffold(
+    backgroundColor: const Color(0xFFF6F7F9),
+    body: BlocConsumer<ApisBloc, ApisBlocState>(
+      bloc: signupBloc,
+      listener: (context, state) {
+        if (state is SignUpState && state.value.code == 200) {
+          Navigator.pushReplacementNamed(
+            context,
+            AppRoutes.signupOtp,
+            arguments: {"email": emailController.text.trim()},
+          );
+        } else if (state is ApisBlocErrorState) {
+          showFailedDialog(state.message, context);
+        }
+      },
+      builder: (context, state) {
+        return ModalProgressHUD(
+          inAsyncCall: state is ApisBlocLoadingState,
+          progressIndicator: const Loader(),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+
+                  /// HEADER
+                  Center(
+  child: Column(
+    children: [
+      Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: themeLogoColorBlue.withValues(alpha: 0.1),
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(
+          Icons.person_add_rounded, // 👈 signup icon
+          size: 32,
+          color: themeLogoColorBlue,
+        ),
+      ),
+      const SizedBox(height: 16),
+      Text(
+        appLocalizations(context).signUp,
+        style: textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.w700,
+          color: Colors.black87,
+        ),
+        textAlign: TextAlign.center,
+      ),
+      const SizedBox(height: 8),
+      Text(
+        "Create your account to get started",
+        style: textTheme.bodyMedium?.copyWith(
+          color: Colors.grey.shade600,
+          height: 1.4,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    ],
+  ),
+),
+
+
+                  const SizedBox(height: 32),
+
+                  /// FORM CARD
+                 Container(
+  width: double.infinity,
+  padding: const EdgeInsets.all(20),
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(18),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withValues(alpha: 0.05),
+        blurRadius: 12,
+        offset: const Offset(0, 4),
+      ),
+    ],
+  ),
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        appLocalizations(context).signUp,
+        style: textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w700,
+          color: Colors.black87,
+        ),
+      ),
+      const SizedBox(height: 20),
+
+      _buildTextField(
+        controller: fnameController,
+        label: "${appLocalizations(context).firstName} *",
+        prefixIcon: Icons.person_outline,
+      ),
+
+      const SizedBox(height: 16),
+
+      _buildTextField(
+        controller: emailController,
+        label: "${appLocalizations(context).emailAddress} *",
+        keyboardType: TextInputType.emailAddress,
+        prefixIcon: Icons.email_outlined,
+      ),
+
+      const SizedBox(height: 16),
+
+      _buildTextField(
+        controller: phoneController,
+        label: "${appLocalizations(context).mobileNumber} *",
+        keyboardType: TextInputType.phone,
+        prefixIcon: Icons.phone_outlined,
+      ),
+
+      const SizedBox(height: 16),
+
+      BlocBuilder<SelectionBloc, SelectionBlocState>(
+        bloc: passwordVisiblityBloc,
+        builder: (context, state) {
+          if (state is SelectBoolState) {
+            return _buildTextField(
+              controller: passwordController,
+              label: "${appLocalizations(context).password} *",
+              obscureText: state.value,
+              prefixIcon: Icons.lock_outline_rounded,
+              suffixIcon: state.value
+                  ? Icons.visibility_off_outlined
+                  : Icons.visibility_outlined,
+              onSuffixTap: () {
+                passwordVisiblityBloc
+                    .add(SelectBoolEvent(!state.value));
+              },
+            );
+          }
+          return const SizedBox.shrink();
+        },
+      ),
+
+      const SizedBox(height: 16),
+
+      // Gender Selection
+      BlocBuilder<SelectionBloc, SelectionBlocState>(
+        bloc: selectGenderBloc,
+        builder: (context, state) {
+          if (state is SelectStringState) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  appLocalizations(context).gender,
+                  style: textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    _genderOption(
+                      appLocalizations(context).male,
+                      "MALE",
+                      state.value,
+                    ),
+                    const SizedBox(width: 12),
+                    _genderOption(
+                      appLocalizations(context).female,
+                      "FEMALE",
+                      state.value,
+                    ),
+                  ],
+                ),
+              ],
+            );
+          }
+          return const SizedBox.shrink();
+        },
+      ),
+
+      const SizedBox(height: 16),
+
+      // Terms and Conditions
+      BlocBuilder<SelectionBloc, SelectionBlocState>(
+        bloc: tncBloc,
+        builder: (context, state) {
+          if (state is SelectBoolState) {
+            return Row(
+              children: [
+                Checkbox(
+                  value: state.value,
+                  onChanged: (value) {
+                    isTncAccepted = value ?? false;
+                    tncBloc.add(SelectBoolEvent(value ?? false));
+                  },
+                  activeColor: Colors.white,
+                  checkColor: themeLogoColorBlue,
+                  fillColor: WidgetStateProperty.resolveWith<Color>(
+                    (Set<WidgetState> states) {
+                      if (states.contains(WidgetState.selected)) {
+                        return Colors.white;
+                      }
+                      return Colors.grey.shade200;
+                    },
+                  ),
+                  side: BorderSide(
+                    color: state.value ? themeLogoColorBlue : Colors.grey.shade400,
+                    width: 1.5,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                Expanded(
+                  child: RichText(
+                    text: TextSpan(
+                      style: textTheme.bodyMedium,
+                      children: [
+                        TextSpan(
+                          text: "I agree to the ",
+                          style: TextStyle(color: Colors.grey.shade600),
+                        ),
+                        TextSpan(
+                          text: appLocalizations(context).tnc,
+                          style: TextStyle(
+                            color: themeLogoColorBlue,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        TextSpan(
+                          text: " and ",
+                          style: TextStyle(color: Colors.grey.shade600),
+                        ),
+                        TextSpan(
+                          text: "Privacy Policy",
+                          style: TextStyle(
+                            color: themeLogoColorBlue,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+          return const SizedBox.shrink();
+        },
+      ),
+
+      const SizedBox(height: 24),
+
+      SizedBox(
+        width: double.infinity,
+        height: 50,
+        child: ElevatedButton(
+          onPressed: onSignupPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: themeLogoColorBlue,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            elevation: 0,
+          ),
+          child: Text(
+            appLocalizations(context).signUp,
+            style: textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ),
+    ],
+  ),
+),
+
+
+                  const SizedBox(height: 20),
+
+                  /// SIGN IN LINK
+                  Center(
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text(
+        appLocalizations(context).alreadyHaveAnAccount,
+        style: textTheme.bodyMedium?.copyWith(
+          color: Colors.grey.shade600,
+        ),
+      ),
+      TextButton(
+        onPressed: () =>
+            Navigator.pushNamed(context, AppRoutes.login),
+        child: Text(
+          appLocalizations(context).signIn,
+          style: textTheme.bodyMedium?.copyWith(
+            color: themeLogoColorBlue,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    ],
+  ),
+),
+
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    ),
+  );
+}
 }

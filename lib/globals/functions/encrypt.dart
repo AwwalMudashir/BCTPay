@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bctpay/globals/index.dart';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as enc;
@@ -6,6 +8,51 @@ import 'package:tuple/tuple.dart';
 String decrypt(String text) {
   var decrypted = decryptAESCryptoJS(text, encryptionKey);
   return decrypted;
+}
+
+String encrypt(String text) {
+  return encryptAESCryptoJS(text, encryptionKey);
+}
+
+/// Matches help2pay/Fortitude login encryption: AES/CBC/PKCS7 with fixed key/iv
+/// and padded payload "000{pwd}9900", Base64 of raw cipher bytes (no salt).
+String hashPwdAndEncrypt(String pwd) {
+  try {
+    final text = "000$pwd"
+        "9900";
+    final key = enc.Key.fromUtf8("1234567812345678");
+    final iv = enc.IV.fromUtf8("1234567812345678");
+    final encrypter =
+        enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc, padding: "PKCS7"));
+    final encrypted = encrypter.encrypt(text, iv: iv);
+    return base64.encode(encrypted.bytes);
+  } catch (e, st) {
+    print("Encryption error: $e\n$st");
+    return "";
+  }
+}
+
+/// Encrypt using the same scheme as decryptAESCryptoJS:
+/// AES/CBC/PKCS7 with OpenSSL-style "Salted__" prefix and MD5 key derivation.
+String encryptAESCryptoJS(String plainText, String passphrase) {
+  // Generate 8-byte salt
+  final secureRandom = Random.secure();
+  final salt = Uint8List.fromList(
+      List<int>.generate(8, (_) => secureRandom.nextInt(256)));
+
+  // Derive key/iv
+  final keyAndIv = deriveKeyAndIV(passphrase, salt);
+  final key = enc.Key(keyAndIv.item1);
+  final iv = enc.IV(keyAndIv.item2);
+
+  final encrypter =
+      enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc, padding: "PKCS7"));
+  final encrypted = encrypter.encrypt(plainText, iv: iv);
+
+  // OpenSSL salted format: "Salted__" + salt + cipherBytes
+  final salted = Uint8List.fromList(
+      "Salted__".codeUnits + salt + encrypted.bytes);
+  return base64.encode(salted);
 }
 
 String decryptAESCryptoJS(String encrypted, String passphrase) {

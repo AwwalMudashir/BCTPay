@@ -7,12 +7,20 @@ class ApiEndpoint {
   static const String sendOTP = "send_otp";
 
   // static const String signUp = "customersignup";
-  static const String signUp = "ecommerce/customer/simple-onboard";
+  static const String signUp = "onboarding/customer/simple-onboard";
   static const String resendVerificationLink = "resend_c_email";
-  static const String verifyRegistrationOtp = "onboard/customer/verify-otp";
+  static const String verifyRegistrationOtp = "onboarding/customer/verify-otp";
+  static const String resendRegistrationOtp = "usermanager/resendotp";
 
   //User
   static const String changePwd = "changepassword";
+  static const String initiatePasswordReset = "ecommerce/initiatePasswordReset";
+  static const String selfPasswordReset = "ecommerce/selfPasswordReset";
+  // PIN management (Core)
+  static const String setPin = "ecommerce/setPIN";
+  static const String initiateForgotPin = "ecommerce/initiateForgotPin";
+  static const String changeTransactPin = "ecommerce/changeTransactPin";
+  static const String validatePinResetOtp = "ecommerce/validatePinResetOtp";
   static const String customerSettingDetail = "settingdetails";
   static const String getProfile = "v1/getprofile";
   static const String updateSetting = "updatesetting";
@@ -110,7 +118,7 @@ class ApiEndpoint {
   static const String accountList = "getaccountprofile";
   static const String bankList = "lookupdata/banks";
   static const String beneficiaryList = "listbeneficiary";
-  static const String beneficiariesFetch = "beneficiaries/fetch";
+  static const String beneficiariesFetch = "beneficiary/fetch";
   static const String beneficiarySave = "beneficiary/save";
   static const String openExpressAcc = "openexpressaccount";
   static const String primaryAccountHistory =
@@ -124,7 +132,7 @@ class ApiEndpoint {
   // static const String bannerList2 = "getcustomerpromotionbannerlist";
   static const String bannerList2 = "getcustomerpromotionbannerlist_v1";
   static const String bctPaySettingDetail = "bctpaysettingdetails";
-  static const String countryList = "getcountry";
+  static const String countryList = "country/list";
   static const String stateCitiesList = "state_cities_list";
   static const String currencyList = "getcurrency";
   static const String couponList = "getcouponlist";
@@ -185,7 +193,9 @@ class ApiEndpoint {
   static const String verifyContact = "v1/verify_contact_number";
   // static const String verifyQR = "verifyqrcode";
   static const String verifyQR = "/v1/verify_qr_code";
-  static const String walletBalance = "wallet/getbalance";
+  static const String walletBalance = "coinwallet/balance";
   static const String momoSendMoney = "momobank/send-money";
+  static const String fetchMyQr = "pay-with-qr/fetch-my-qr";
+  static const String getWalletNameByQr = "pay-with-qr/getWalletNameByQr";
   // static const String verifyInvoiceQR = "verify_invoice_qr_link";
 }

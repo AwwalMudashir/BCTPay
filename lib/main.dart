@@ -1,4 +1,19 @@
 import 'package:bctpay/globals/index.dart';
+import 'package:bctpay/views/my_app.dart';
+
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Handling a background message: ${message.messageId}");
+}
+
+void firebaseAnalyticsConfig(){
+  //TODO: Implement firebase analytics
+}
+
+void firebaseCrashlyticsConfig(){
+  //TODO: Implement firebase crashlytics
+}
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

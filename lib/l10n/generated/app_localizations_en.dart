@@ -39,6 +39,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accountHolderName => 'Account Holder Name';
 
   @override
+  String get accountInformation => 'Account Information';
+
+  @override
   String get accountNumber => 'Account number';
 
   @override
@@ -90,6 +93,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get amountRequestedSuccessfully => 'Amount Requested Successfully';
+
+  @override
+  String get and => 'and';
 
   @override
   String get amountShouldBeGreaterThanZero => 'Amount Should Be Greater Than 0';
@@ -374,6 +380,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dob => 'Date Of Birth';
 
   @override
+  String get nationality => 'Nationality';
+
+  @override
+  String get enterNationality => 'Enter Nationality';
+
+  @override
   String get docIdNumber => 'Document ID Number';
 
   @override
@@ -438,7 +450,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterAddress => 'Enter Address';
 
   @override
-  String get enterAmount => 'Enter Amount';
+  String get enterAmount => 'Enter amount';
 
   @override
   String get enterBankCode => 'Enter Bank Code';
@@ -662,6 +674,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get idVerificationDesc =>
       'In Order To Completed Your KYC, Please Upload A Copy Of Your Identity Document';
+
+  @override
+  String get iAgreeToThe => 'I agree to the';
 
   @override
   String get identityVerification => 'Identity Verification';
@@ -1431,6 +1446,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchHere => 'Search Here...';
 
   @override
+  String get searchBeneficiaries => 'Search beneficiaries...';
+
+  @override
   String get security => 'Security';
 
   @override
@@ -1554,6 +1572,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signUp => 'Sign Up';
 
   @override
+  String get dontHaveAnAccount => 'Don\'t have an account?';
+
+  @override
+  String get alreadyHaveAnAccount => 'Already have an account?';
+
+  @override
   String get signupTnc => 'Terms & Conditions';
 
   @override
@@ -1597,6 +1621,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get theme => 'Theme';
+
+  @override
+  String get termsAndConditions => 'Terms and Conditions';
 
   @override
   String get thisFieldShouldNotBeEmpty => 'This Field Shouldn\'t Be Empty';
@@ -1662,6 +1689,77 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get transfer => 'Transfer';
+
+  @override
+  String get transferMobileMoney => 'Transfer to Mobile Money';
+
+  @override
+  String get transferMobileMoneySubtitle =>
+      'Send funds to a mobile money wallet';
+
+  @override
+  String get sendViaUsertag => 'Send Via Usertag';
+
+  @override
+  String get sendViaUsertagSubtitle => 'Send funds to a friend using their tag';
+
+  @override
+  String get sendToBankAccount => 'Send to Bank Account';
+
+  @override
+  String get sendToBankAccountSubtitle => 'Send to a recipient bank account';
+
+  @override
+  String get scanQrToSend => 'Scan QR Code to Send';
+
+  @override
+  String get scanQrToSendSubtitle => 'Send funds by scanning a QR code';
+
+  @override
+  String get beneficiaries => 'Beneficiaries';
+
+  @override
+  String get seeAll => 'See All';
+
+  @override
+  String get selectPaymentMethod =>
+      'Select the payment method you want to use.';
+
+  @override
+  String get unableToLoadBeneficiaries => 'Unable to load beneficiaries';
+
+  @override
+  String get noBeneficiaries => 'No beneficiaries yet';
+
+  @override
+  String get moreTitle => 'More';
+
+  @override
+  String get transactionHistoryTitle => 'Transaction History';
+
+  @override
+  String get helpSupport => 'Help & Support';
+
+  @override
+  String get themeAuto => 'Auto';
+
+  @override
+  String get momoType => 'Momo Type';
+
+  @override
+  String get pleaseSelectMomo => 'Please select a mobile money provider';
+
+  @override
+  String get pleaseSelectWallet => 'Please select a wallet';
+
+  @override
+  String get pleaseSelectCountry => 'Please select a country';
+
+  @override
+  String get pleaseFillRequiredFields => 'Please fill all required fields';
+
+  @override
+  String get change => 'Change';
 
   @override
   String get transferDetails => 'Transfer Details';
@@ -1912,4 +2010,82 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yourPaymentOf => 'Your Payment Of';
+
+  @override
+  String get generatePaymentLink => 'Generate Payment Link';
+
+  @override
+  String get generatePaymentLinkSubtitle =>
+      'Create a payment link for pay by bank.';
+
+  @override
+  String get generateLink => 'Generate Link';
+
+  @override
+  String get enterValidAmount => 'Please enter a valid amount';
+
+  @override
+  String get requiredField => 'This field is required';
+
+  @override
+  String get paymentLinkGenerated => 'Payment link generated';
+
+  @override
+  String get virtualAccount => 'Virtual Account Number';
+
+  @override
+  String get currency => 'Currency';
+
+  @override
+  String get receive => 'Receive';
+
+  @override
+  String get receiveMoneyTitle => 'Receive Money';
+
+  @override
+  String get receiveSubtitle => 'Select your network to receive funds.';
+
+  @override
+  String get selectChainNetwork => 'Select Chain Network';
+
+  @override
+  String get fetchPaymentStatus => 'Fetch Payment Status';
+
+  @override
+  String get copyAddress => 'Copy Address';
+
+  @override
+  String get shareAddress => 'Share Address';
+
+  @override
+  String get addressCopied => 'Address copied to clipboard';
+
+  @override
+  String get walletAddress => 'Wallet Address';
+
+  @override
+  String receiveWarning(Object network) {
+    return 'Send only $network deposits to this address. Other funds will not be credited or refunded.';
+  }
+
+  @override
+  String get myQrTitle => 'My QR Code';
+
+  @override
+  String get myQrDescription => 'Show this code to receive payments quickly.';
+
+  @override
+  String get scanQrToReceive => 'Scan a QR to receive money';
+
+  @override
+  String get amountToReceive => 'Amount to receive';
+
+  @override
+  String get receiveDetails => 'Receive details';
+
+  @override
+  String get accountType => 'Account type';
+
+  @override
+  String get confirmAndReceive => 'Confirm & Receive';
 }

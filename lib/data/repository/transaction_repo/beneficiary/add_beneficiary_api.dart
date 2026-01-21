@@ -1,3 +1,4 @@
+
 import 'package:bctpay/globals/index.dart';
 import 'package:http/http.dart' as http;
 
@@ -6,25 +7,24 @@ Future<AddBeneficiaryResponse> addBeneficiary({
   required String bankname,
   required String accountnumber,
   required String beneficiaryname,
-  required String clientId,
-  required String accountRole,
-  required String walletPhonenumber,
-  required String phoneCode,
+  required String accountType,
 }) async {
   final body = {
     "merchantCode": merchantCode,
-    "beneficiaryAccountNo":
-        accountRole == "BANK" ? accountnumber : walletPhonenumber,
+    "beneficiaryAccountNo": accountnumber,
     "beneficiaryName": beneficiaryname,
     "beneficiaryBankName": bankname,
     "beneficiaryBankCode": bankcode,
-    "accountType": accountRole,
+    "accountType": accountType,
   };
+  final uri = Uri.parse("$baseUrlCore/${ApiEndpoint.beneficiarySave}");
+  print("[REQ] POST $uri body=$body");
   var response = await http.post(
-    Uri.parse("$baseUrl/${ApiEndpoint.beneficiarySave}"),
-    headers: await ApiClient.header(),
+    uri,
+    headers: await ApiClient.header(useCore: true),
     body: jsonEncode(body),
   );
+  print("[RESP] POST $uri status=${response.statusCode} body=${response.body}");
 
   if (response.statusCode == 200) {
     var data = json.decode(response.body);

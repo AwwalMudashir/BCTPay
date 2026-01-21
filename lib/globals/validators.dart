@@ -1,5 +1,5 @@
-const passwordPattern =
-    r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{5,}$';
+// Require at least 8 characters, one uppercase, one digit, and one special char
+const passwordPattern = r'^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$&*~]).{8,}$';
 const emailPattern = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]";
 // const phoneRegx = "([0-9]{6})";
 final RegExp phoneRegx = RegExp(r'^\d{7,14}$');

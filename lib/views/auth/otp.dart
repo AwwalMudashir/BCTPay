@@ -55,7 +55,7 @@ class _OTPScreenState extends State<OTPScreen>
                 SharedPreferenceHelper.saveLoginData(state.value);
                 SharedPreferenceHelper.saveLoginCredentials(
                         mobile: arg.loginBody?.email ?? "",
-                        password: arg.loginBody?.password ?? "",
+                        password: "", // Don't save password for security
                         isRemember: arg.isRemember ?? false)
                     .whenComplete(() {
                   if (!context.mounted) return;

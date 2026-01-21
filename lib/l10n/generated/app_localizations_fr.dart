@@ -39,6 +39,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get accountHolderName => 'Nom Du Titulaire Du Compte';
 
   @override
+  String get accountInformation => 'Informations Sur Le Compte';
+
+  @override
   String get accountNumber => 'Numéro de compte';
 
   @override
@@ -90,6 +93,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get amountRequestedSuccessfully => 'Montant Demandé Avec Succès';
+
+  @override
+  String get and => 'et';
 
   @override
   String get amountShouldBeGreaterThanZero =>
@@ -377,6 +383,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dob => 'Date De Naissance';
 
   @override
+  String get nationality => 'Nationalité';
+
+  @override
+  String get enterNationality => 'Entrez la nationalité';
+
+  @override
   String get docIdNumber => 'Numéro D\'identification Du Document';
 
   @override
@@ -443,7 +455,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get enterAddress => 'Entrez L\'adresse';
 
   @override
-  String get enterAmount => 'Entrez Le Montant';
+  String get enterAmount => 'Saisir le montant';
 
   @override
   String get enterBankCode => 'Entrez Le Code Banque';
@@ -671,6 +683,9 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get idVerificationDesc =>
       'Afin De Compléter Votre KYC, Veuillez Télécharger Une Copie De Votre Pièce D\'identité';
+
+  @override
+  String get iAgreeToThe => 'J\'accepte les';
 
   @override
   String get identityVerification => 'Vérification D\'identité';
@@ -1456,6 +1471,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get searchHere => 'Rechercher Ici...';
 
   @override
+  String get searchBeneficiaries => 'Rechercher des bénéficiaires...';
+
+  @override
   String get security => 'Sécurité';
 
   @override
@@ -1580,6 +1598,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get signUp => 'S\'inscrire';
 
   @override
+  String get dontHaveAnAccount => 'Vous n\'avez pas de compte?';
+
+  @override
+  String get alreadyHaveAnAccount => 'Vous avez déjà un compte?';
+
+  @override
   String get signupTnc => 'Termes Et Conditions';
 
   @override
@@ -1624,6 +1648,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get theme => 'Thème';
+
+  @override
+  String get termsAndConditions => 'Conditions générales';
 
   @override
   String get thisFieldShouldNotBeEmpty => 'Ce Champ Ne Doit Pas Être Vide';
@@ -1689,6 +1716,82 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get transfer => 'Transférer';
+
+  @override
+  String get transferMobileMoney => 'Transférer vers Mobile Money';
+
+  @override
+  String get transferMobileMoneySubtitle =>
+      'Envoyez des fonds vers un portefeuille mobile';
+
+  @override
+  String get sendViaUsertag => 'Envoyer via identifiant';
+
+  @override
+  String get sendViaUsertagSubtitle =>
+      'Envoyez des fonds à un ami via son identifiant';
+
+  @override
+  String get sendToBankAccount => 'Envoyer vers un compte bancaire';
+
+  @override
+  String get sendToBankAccountSubtitle =>
+      'Envoyer vers le compte bancaire d\'un bénéficiaire';
+
+  @override
+  String get scanQrToSend => 'Scanner un QR Code pour envoyer';
+
+  @override
+  String get scanQrToSendSubtitle => 'Envoyez des fonds en scannant un QR code';
+
+  @override
+  String get beneficiaries => 'Bénéficiaires';
+
+  @override
+  String get seeAll => 'Voir tout';
+
+  @override
+  String get selectPaymentMethod =>
+      'Sélectionnez le mode de paiement que vous souhaitez utiliser.';
+
+  @override
+  String get unableToLoadBeneficiaries =>
+      'Impossible de charger les bénéficiaires';
+
+  @override
+  String get noBeneficiaries => 'Aucun bénéficiaire pour le moment';
+
+  @override
+  String get moreTitle => 'Plus';
+
+  @override
+  String get transactionHistoryTitle => 'Historique des transactions';
+
+  @override
+  String get helpSupport => 'Aide & Assistance';
+
+  @override
+  String get themeAuto => 'Auto';
+
+  @override
+  String get momoType => 'Type de Mobile Money';
+
+  @override
+  String get pleaseSelectMomo =>
+      'Veuillez sélectionner un fournisseur mobile money';
+
+  @override
+  String get pleaseSelectWallet => 'Veuillez sélectionner un portefeuille';
+
+  @override
+  String get pleaseSelectCountry => 'Veuillez sélectionner un pays';
+
+  @override
+  String get pleaseFillRequiredFields =>
+      'Veuillez remplir tous les champs requis';
+
+  @override
+  String get change => 'Changer';
 
   @override
   String get transferDetails => 'Détails Du Transfert';
@@ -1940,4 +2043,84 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get yourPaymentOf => 'Votre Paiement De';
+
+  @override
+  String get generatePaymentLink => 'Générer un lien de paiement';
+
+  @override
+  String get generatePaymentLinkSubtitle =>
+      'Créez un lien de paiement pour Pay by Bank.';
+
+  @override
+  String get generateLink => 'Générer le lien';
+
+  @override
+  String get enterValidAmount => 'Veuillez saisir un montant valide';
+
+  @override
+  String get requiredField => 'Ce champ est obligatoire';
+
+  @override
+  String get paymentLinkGenerated => 'Lien de paiement généré';
+
+  @override
+  String get virtualAccount => 'Compte virtuel';
+
+  @override
+  String get currency => 'Devise';
+
+  @override
+  String get receive => 'Recevoir';
+
+  @override
+  String get receiveMoneyTitle => 'Recevoir de l\'argent';
+
+  @override
+  String get receiveSubtitle =>
+      'Sélectionnez votre réseau pour recevoir des fonds.';
+
+  @override
+  String get selectChainNetwork => 'Sélectionner le réseau';
+
+  @override
+  String get fetchPaymentStatus => 'Vérifier le statut du paiement';
+
+  @override
+  String get copyAddress => 'Copier l\'adresse';
+
+  @override
+  String get shareAddress => 'Partager l\'adresse';
+
+  @override
+  String get addressCopied => 'Adresse copiée';
+
+  @override
+  String get walletAddress => 'Adresse du portefeuille';
+
+  @override
+  String receiveWarning(Object network) {
+    return 'Envoyez uniquement des dépôts $network vers cette adresse. Les autres fonds ne seront pas crédités ni remboursés.';
+  }
+
+  @override
+  String get myQrTitle => 'Mon QR Code';
+
+  @override
+  String get myQrDescription =>
+      'Présentez ce code pour recevoir des paiements rapidement.';
+
+  @override
+  String get scanQrToReceive => 'Scannez un QR pour recevoir de l\'argent';
+
+  @override
+  String get amountToReceive => 'Montant à recevoir';
+
+  @override
+  String get receiveDetails => 'Détails de réception';
+
+  @override
+  String get accountType => 'Type de compte';
+
+  @override
+  String get confirmAndReceive => 'Confirmer et recevoir';
 }

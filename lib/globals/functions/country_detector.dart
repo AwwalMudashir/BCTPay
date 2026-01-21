@@ -5,7 +5,7 @@ Future<CountryData?> seperatePhoneAndDialCode(String phoneWithDialCode,
   try {
     var allCountries = await getCountryList();
     CountryData? foundedCountry;
-    for (CountryData country in allCountries.data ?? []) {
+    for (CountryData country in allCountries.data) {
       String dialCode = "+${country.phoneCode}";
       if (phoneWithDialCode.contains(dialCode)) {
         foundedCountry = country;
@@ -33,7 +33,7 @@ Future<CountryData?> getCountryWithCountryName(String? countryName) async {
   try {
     var allCountries = await getCountryList();
     CountryData? foundedCountry;
-    for (CountryData country in allCountries.data ?? []) {
+    for (CountryData country in allCountries.data) {
       String name = country.countryName.toString();
       if (countryName?.contains(name) ?? false) {
         foundedCountry = country;

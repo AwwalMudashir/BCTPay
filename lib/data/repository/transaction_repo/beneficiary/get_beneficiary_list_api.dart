@@ -1,23 +1,30 @@
+
+import 'package:bctpay/data/models/transactions/beneficiary/beneficiary_fetch_response.dart';
 import 'package:bctpay/globals/index.dart';
 import 'package:http/http.dart' as http;
 
-Future<BeneficiaryListResponse> getBeneficiaryList({
+Future<BeneficiaryFetchResponse> getBeneficiaryList({
   required int page,
   required int limit,
 }) async {
-  var uri = Uri.parse("$baseUrl/${ApiEndpoint.beneficiariesFetch}")
+  // Core expects pageNumber + pageSize
+  final pageNumber = page <= 0 ? 1 : page;
+  const pageSize = 100; // fixed as requested
+  var uri = Uri.parse("$baseUrlCore/${ApiEndpoint.beneficiariesFetch}")
       .replace(queryParameters: {
-    "page": "$page",
-    "limit": "$limit",
+    "pageNumber": "$pageNumber",
+    "pageSize": "$pageSize",
   });
+  print("[REQ] GET $uri");
   var response = await http.get(
     uri,
-    headers: await ApiClient.header(),
+    headers: await ApiClient.header(useCore: true),
   );
+  print("[RESP] GET $uri status=${response.statusCode} body=${response.body}");
 
   if (response.statusCode == 200) {
     var data = json.decode(response.body);
-    return BeneficiaryListResponse.fromJson(data);
+    return BeneficiaryFetchResponse.fromJson(data);
   } else {
     throw Exception(response.body);
   }

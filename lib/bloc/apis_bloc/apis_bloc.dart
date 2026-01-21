@@ -77,7 +77,32 @@ class ApisBloc extends Bloc<ApisBlocEvent, ApisBlocState> {
           country: event.country,
           pinCode: event.pinCode,
           gender: event.gender,
+          onboardingId: event.onboardingId,
+          dateOfBirth: event.dateOfBirth,
+          nationality: event.nationality,
         ).then((value) => emit(SignUpState(value)));
+      } catch (e) {
+        emit(ApisBlocErrorState(message: e.toString()));
+      }
+    }
+
+    if (event is VerifyRegistrationOtpEvent) {
+      emit(ApisBlocLoadingState());
+      try {
+        await verifyRegistrationOtp(
+          email: event.email,
+          otp: event.otp,
+        ).then((value) => emit(VerifyRegistrationOtpState(value)));
+      } catch (e) {
+        emit(ApisBlocErrorState(message: e.toString()));
+      }
+    }
+
+    if (event is ResendRegistrationOtpEvent) {
+      emit(ApisBlocLoadingState());
+      try {
+        await resendRegistrationOtp(email: event.email)
+            .then((value) => emit(ResendRegistrationOtpState(value)));
       } catch (e) {
         emit(ApisBlocErrorState(message: e.toString()));
       }
@@ -591,11 +616,42 @@ class ApisBloc extends Bloc<ApisBlocEvent, ApisBlocState> {
           .then((value) => emit(ForgetResetPasswordState(value)));
     }
 
-    if (event is ChangePasswordEvent) {
+    if (event is InitiatePasswordResetEvent) {
       emit(ApisBlocLoadingState());
-      await changePassword(
-              oldPassword: event.oldPassword, newPassword: event.newPassword)
-          .then((value) => emit(ChangePasswordState(value)));
+      await initiatePasswordReset(email: event.email)
+          .then((value) => emit(InitiatePasswordResetState(value)));
+    }
+
+    if (event is CompletePasswordResetEvent) {
+      emit(ApisBlocLoadingState());
+      await selfPasswordReset(
+        email: event.email,
+        otp: event.otp,
+        newPassword: event.newPassword,
+      ).then((value) => emit(CompletePasswordResetState(value)));
+    }
+    if (event is ChangeTransactionPinEvent) {
+      emit(ApisBlocLoadingState());
+      await changeTransactionPin(
+        username: event.username,
+        currentPin: event.currentPin,
+        newPin: event.newPin,
+      ).then((value) => emit(ChangeTransactionPinState(value)));
+    }
+    if (event is InitiateForgotPinEvent) {
+      emit(ApisBlocLoadingState());
+      await initiateForgotPin(username: event.username)
+          .then((value) => emit(InitiateForgotPinState(value)));
+    }
+    if (event is ValidatePinResetOtpEvent) {
+      emit(ApisBlocLoadingState());
+      await validatePinResetOtp(username: event.username, otp: event.otp)
+          .then((value) => emit(ValidatePinResetOtpState(value)));
+    }
+    if (event is SetPinEvent) {
+      emit(ApisBlocLoadingState());
+      await setPin(username: event.username, newPin: event.newPin)
+          .then((value) => emit(SetPinState(value)));
     }
     if (event is AddBeneficiaryEvent) {
       emit(ApisBlocLoadingState());
@@ -604,10 +660,7 @@ class ApisBloc extends Bloc<ApisBlocEvent, ApisBlocState> {
         bankname: event.bankname,
         accountnumber: event.accountnumber,
         beneficiaryname: event.beneficiaryname,
-        clientId: event.clientId,
-        accountRole: event.accountRole,
-        walletPhonenumber: event.walletPhoneNumber,
-        phoneCode: event.phoneCode,
+        accountType: event.accountRole,
       ).then((value) => emit(AddBeneficiaryState(value)));
     }
 
