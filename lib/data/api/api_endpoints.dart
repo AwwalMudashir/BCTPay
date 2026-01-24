@@ -198,4 +198,8 @@ class ApiEndpoint {
   static const String fetchMyQr = "pay-with-qr/fetch-my-qr";
   static const String getWalletNameByQr = "pay-with-qr/getWalletNameByQr";
   // static const String verifyInvoiceQR = "verify_invoice_qr_link";
+
+  // kyc
+  static const fetchKYCdata = '/customer-kyc/fetch';
+  static const saveKYCdata = '/customer-kyc/save';
 }

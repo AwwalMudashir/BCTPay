@@ -268,7 +268,7 @@ class _SendMobileMoneyScreenState extends State<SendMobileMoneyScreen> {
         Row(
           children: [
             Expanded(
-              flex: 4,
+              flex: 5,
               child: InkWell(
                 onTap: _showCountrySheet,
                 borderRadius: BorderRadius.circular(12),
@@ -310,7 +310,7 @@ class _SendMobileMoneyScreenState extends State<SendMobileMoneyScreen> {
             ),
             const SizedBox(width: 10),
             Expanded(
-              flex: 7,
+              flex: 6,
               child: _textField(
                 controller: _phoneController,
                 hint: t.mobileNumber,

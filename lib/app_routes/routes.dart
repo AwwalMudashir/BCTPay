@@ -1,5 +1,6 @@
 import 'package:bctpay/globals/globals.dart';
 import 'package:bctpay/globals/index.dart';
+import 'package:bctpay/data/models/kyc/kyc_response.dart' as kyc_models;
 import 'package:bctpay/views/transaction/send_bank_transfer.dart';
 import 'package:bctpay/views/transaction/send_bank_summary.dart';
 import 'package:bctpay/views/transaction/send_bank_enter_pin.dart';
@@ -12,6 +13,8 @@ import 'package:bctpay/views/transaction/payment_link/generate_payment_link_scre
 import 'package:bctpay/views/auth/signup_otp.dart';
 import 'package:bctpay/views/user/change_pin.dart';
 import 'package:bctpay/views/user/forgot_pin.dart';
+import 'package:bctpay/views/kyc/kyc_screen.dart';
+import 'package:bctpay/views/kyc/kyc_document_upload_screen.dart';
 
 class AppRoutes {
   static const String splash = '/';
@@ -51,9 +54,10 @@ class AppRoutes {
   static const String notificationDetail = '/notificationDetail';
   static const String contactUs = '/contactUs';
   static const String language = '/language';
-  // static const String kyc = '/kyc';
-  // static const String kycDetail = '/kycDetail';
+  static const String kyc = '/kyc';
+  static const String kycDetail = '/kycDetail';
   static const String kycHistory = '/kycHistory';
+  static const String kycDocumentUpload = '/kycDocumentUpload';
   static const String webview = '/webview';
   static const String paymentRequests = '/paymentRequests';
   static const String openExpressAccount = '/openExpressAccount';
@@ -139,6 +143,10 @@ Map<String, Widget Function(BuildContext)> routes = {
   AppRoutes.notificationDetail: (context) => const NotificationDetail(),
   AppRoutes.contactUs: (context) => const ContactUs(),
   AppRoutes.language: (context) => const LanguageDropDown(),
+  AppRoutes.kyc: (context) => const KycScreen(),
+  AppRoutes.kycDocumentUpload: (context) => KycDocumentUploadScreen(
+        item: ModalRoute.of(context)!.settings.arguments as kyc_models.KYCItem,
+      ),
   AppRoutes.kycHistory: (context) => const KYCHistory(),
   AppRoutes.webview: (context) => const CustomWebView(),
   AppRoutes.paymentRequests: (context) => const PaymentRequestsScreen(),

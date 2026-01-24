@@ -301,11 +301,8 @@ class TransferSuccessfullScreen extends StatelessWidget {
                                         limit: 10,
                                         page: 1,
                                         fromAnotherScreen: true));
-                                Navigator.popUntil(
-                                    context,
-                                    (route) =>
-                                        route.settings.name ==
-                                        AppRoutes.bottombar);
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    AppRoutes.dashboard, (route) => false);
                               },
                               child: Text(appLocalizations(context).close)),
                           10.height,
@@ -332,8 +329,8 @@ class TransferSuccessfullScreen extends StatelessWidget {
                   onPressed: () {
                     transactionHistoryBloc.add(TransactionHistoryEvent(
                         limit: 10, page: 1, fromAnotherScreen: true));
-                    Navigator.popUntil(context,
-                        (route) => route.settings.name == AppRoutes.bottombar);
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        AppRoutes.dashboard, (route) => false);
                   },
                   icon: Icon(Icons.clear)),
             )

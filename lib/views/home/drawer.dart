@@ -172,7 +172,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                             ],
                           ),
                         ]),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 20),
 
                         // Account Section
                         _card([
@@ -446,25 +446,25 @@ class _DrawerScreenState extends State<DrawerScreen> {
             themeColor: mode == ThemeMode.dark ? "dark" : "light",
           ));
         },
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
           decoration: BoxDecoration(
             color: isSelected
                 ? themeLogoColorBlue.withValues(alpha: 0.2)
                 : Colors.grey.shade50,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
             border: Border.all(
                 color: isSelected
                     ? themeLogoColorBlue
                     : Colors.grey.shade300,
-                width: isSelected ? 2 : 1),
+                width: isSelected ? 1.5 : 0.8),
             boxShadow: isSelected ? [
               BoxShadow(
                 color: themeLogoColorBlue.withValues(alpha: 0.3),
-                blurRadius: 8,
-                spreadRadius: 1,
-                offset: const Offset(0, 2),
+                blurRadius: 6,
+                spreadRadius: 0.5,
+                offset: const Offset(0, 1),
               )
             ] : null,
           ),
@@ -508,25 +508,25 @@ class _DrawerScreenState extends State<DrawerScreen> {
           customerSettingBloc.add(UpdateCustomerSettingEvent(
               language: locale.languageCode));
         },
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
           decoration: BoxDecoration(
             color: isSelected
                 ? themeLogoColorBlue.withValues(alpha: 0.2)
                 : Colors.grey.shade50,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
             border: Border.all(
                 color: isSelected
                     ? themeLogoColorBlue
                     : Colors.grey.shade300,
-                width: isSelected ? 2 : 1),
+                width: isSelected ? 1.5 : 0.8),
             boxShadow: isSelected ? [
               BoxShadow(
                 color: themeLogoColorBlue.withValues(alpha: 0.3),
-                blurRadius: 8,
-                spreadRadius: 1,
-                offset: const Offset(0, 2),
+                blurRadius: 6,
+                spreadRadius: 0.5,
+                offset: const Offset(0, 1),
               )
             ] : null,
           ),
@@ -536,22 +536,23 @@ class _DrawerScreenState extends State<DrawerScreen> {
               children: [
                 CountryFlag.fromCountryCode(
                   flagCode,
-                  height: 16,
-                  width: 16,
+                  height: 12,
+                  width: 12,
                 ),
-                const SizedBox(width: 6),
+                const SizedBox(width: 4),
                 Text(
                   label,
                   style: textTheme.bodySmall?.copyWith(
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
                     color: isSelected ? themeLogoColorBlue : Colors.black87,
+                    fontSize: 11,
                   ),
                 ),
                 if (isSelected) ...[
-                  const SizedBox(width: 4),
+                  const SizedBox(width: 2),
                   Icon(
                     Icons.check_circle,
-                    size: 16,
+                    size: 12,
                     color: themeLogoColorBlue,
                   ),
                 ],

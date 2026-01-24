@@ -281,8 +281,8 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.popUntil(context,
-                      (route) => route.settings.name == AppRoutes.bottombar);
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      AppRoutes.dashboard, (route) => false);
                 },
                 icon: const Icon(Icons.home))
           ],

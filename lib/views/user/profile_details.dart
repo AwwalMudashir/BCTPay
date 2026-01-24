@@ -88,7 +88,7 @@ class ProfileDetails extends StatelessWidget {
                     icon: Icon(Icons.account_box_outlined),
                     suffix: const MyKYCStatusView(),
                     onTap: () {
-                      Navigator.of(context).pushNamed(AppRoutes.kycTakeASelfie);
+                      Navigator.of(context).pushNamed(AppRoutes.kyc);
                     },
                   ),
                   AccountMenu(

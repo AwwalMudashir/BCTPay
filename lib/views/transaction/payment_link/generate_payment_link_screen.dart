@@ -292,6 +292,7 @@ class _GeneratePaymentLinkScreenState extends State<GeneratePaymentLinkScreen> {
             : DropdownButton<CountryData>(
                 value: _selectedCountry,
                 isExpanded: true,
+                dropdownColor: Colors.white,
                 style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
                 items: _countries
                     .map(

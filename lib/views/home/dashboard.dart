@@ -16,22 +16,22 @@ class _DashboardState extends State<Dashboard> {
     _QuickAction(
       route: AppRoutes.sendOptions,
       icon: Icons.send_rounded,
-      title: 'Send',
+      titleKey: 'send',
     ),
     _QuickAction(
       route: AppRoutes.receiveMoney,
       icon: Icons.call_received_rounded,
-      title: 'Receive',
+      titleKey: 'received',
     ),
     _QuickAction(
       route: AppRoutes.generatePaymentLink,
       icon: Icons.link_rounded,
-      title: 'Payment',
+      titleKey: 'payment',
     ),
     _QuickAction(
       route: AppRoutes.accountsList,
       icon: Icons.account_balance_wallet_rounded,
-      title: 'Accounts',
+      titleKey: 'linkedAccounts',
     ),
   ];
 
@@ -55,19 +55,22 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          // Header section with gradient background
-          SliverToBoxAdapter(child: _buildHeader()),
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            // Header section with gradient background
+            SliverToBoxAdapter(child: _buildHeader()),
 
-          // Transaction history section
-          SliverToBoxAdapter(child: _buildTransactionSection()),
+            // Transaction history section
+            SliverToBoxAdapter(child: _buildTransactionSection()),
 
-          // Transaction list
-          _buildTransactionList(),
-        ],
+            // Transaction list
+            _buildTransactionList(),
+          ],
+        ),
       ),
     );
   }
@@ -122,13 +125,6 @@ class _DashboardState extends State<Dashboard> {
           topLeft: Radius.circular(32),
           topRight: Radius.circular(32),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0x0F000000),
-            blurRadius: 16,
-            offset: Offset(0, -4),
-          )
-        ],
       ),
       child: Column(
         children: [
@@ -137,7 +133,7 @@ class _DashboardState extends State<Dashboard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Transaction History",
+                appLocalizations(context).transactionHistoryTitle,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                   color: themeLogoColorBlue,
@@ -151,7 +147,7 @@ class _DashboardState extends State<Dashboard> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                child: const Text("View All"),
+                child: Text(appLocalizations(context).seeAll),
               ),
             ],
           ),
@@ -170,7 +166,7 @@ class _DashboardState extends State<Dashboard> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 24),
               child: Text(
-                "No transactions yet",
+                appLocalizations(context).noTransaction,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Colors.grey.shade600,
@@ -356,12 +352,12 @@ class _ActionButton extends StatelessWidget {
 class _QuickAction {
   final IconData icon;
   final String route;
-  final String title;
+  final String titleKey;
 
   const _QuickAction({
     required this.icon,
     required this.route,
-    required this.title,
+    required this.titleKey,
   });
 }
 
@@ -374,161 +370,153 @@ class _TransactionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final isCredit = transaction.isCredit;
-    final amountColor = isCredit ? Colors.teal : Colors.red;
+    final amountColor = isCredit ? const Color(0xFF00A389) : const Color(0xFFE53935);
     final status = transaction.status.toUpperCase();
     final statusColor = _getStatusColor(status);
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade100),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.1)), // Modern thin border
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Transaction icon
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: amountColor.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              isCredit ? Icons.call_received : Icons.north_east,
-              color: amountColor,
-              size: 24,
-            ),
-          ),
-
-          const SizedBox(width: 16),
-
-          // Transaction details
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell( // Added ripple effect for better UX
+          borderRadius: BorderRadius.circular(20),
+          onTap: () {}, 
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Title and amount row
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        transaction.title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          height: 1.2,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      transaction.formattedAmount,
-                      textAlign: TextAlign.right,
-                      style: textTheme.titleMedium?.copyWith(
-                        color: amountColor,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
+                // 1. Transaction Icon with subtle background gradient or solid
+                _buildIcon(isCredit, amountColor),
 
-                const SizedBox(height: 6),
+                const SizedBox(width: 16),
 
-                // Date
-                Text(
-                  transaction.tranDate,
-                  style: textTheme.bodySmall?.copyWith(
-                    color: Colors.grey.shade600,
-                    fontSize: 12,
-                  ),
-                ),
-
-                const SizedBox(height: 6),
-
-                // Type and Reference
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        "Type: ${transaction.transactionType}",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: textTheme.bodySmall?.copyWith(
-                          color: Colors.grey.shade700,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 11,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Row(
+                // 2. Transaction Details
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            "Ref: ",
-                            style: textTheme.bodySmall?.copyWith(
-                              color: Colors.grey.shade600,
-                              fontSize: 11,
-                            ),
-                          ),
                           Expanded(
                             child: Text(
-                              transaction.tranRefNo.isNotEmpty
-                                  ? transaction.tranRefNo
-                                  : "N/A",
+                              transaction.title,
+                              style: textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xFF1A1C1E),
+                                letterSpacing: -0.2,
+                              ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: textTheme.bodySmall?.copyWith(
-                                color: Colors.grey.shade800,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 11,
-                              ),
+                            ),
+                          ),
+                          Text(
+                            "${isCredit ? '+' : '-'}${transaction.formattedAmount}",
+                            style: textTheme.titleMedium?.copyWith(
+                              color: amountColor,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 16,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
+                      
+                      const SizedBox(height: 4),
+                      
+                      Text(
+                        transaction.tranDate,
+                        style: textTheme.bodySmall?.copyWith(
+                          color: Colors.grey.shade500,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
 
-                const SizedBox(height: 8),
-
-                // Status badge
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: statusColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    status.isNotEmpty ? status : "STATUS",
-                    style: textTheme.labelSmall?.copyWith(
-                      color: statusColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 10,
-                      letterSpacing: 0.5,
-                    ),
+                      const SizedBox(height: 12),
+                      
+                      // 3. Metadata Row (Responsive using Wrap)
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          _buildStatusBadge(status, statusColor, context),
+                          Text(
+                            "•",
+                            style: TextStyle(color: Colors.grey.shade300),
+                          ),
+                          Text(
+                            transaction.transactionType,
+                            style: textTheme.labelSmall?.copyWith(
+                              color: Colors.grey.shade700,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            "ID: ${transaction.tranRefNo.isNotEmpty ? transaction.tranRefNo : 'N/A'}",
+                            style: textTheme.labelSmall?.copyWith(
+                              color: Colors.grey.shade400,
+                              fontFamily: 'monospace', // Gives it a "reference code" feel
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-        ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIcon(bool isCredit, Color color) {
+    return Container(
+      width: 52,
+      height: 52,
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(14), // Squircle look
+      ),
+      child: Center(
+        child: Icon(
+          isCredit ? Icons.add_rounded : Icons.remove_rounded,
+          color: color,
+          size: 28,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusBadge(String status, Color color, BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(100), // Pill shape
+      ),
+      child: Text(
+        status.isNotEmpty ? status : "UNKNOWN",
+        style: TextStyle(
+          color: color,
+          fontSize: 9,
+          fontWeight: FontWeight.w800,
+          letterSpacing: 0.5,
+        ),
       ),
     );
   }
@@ -537,14 +525,14 @@ class _TransactionCard extends StatelessWidget {
     switch (status) {
       case "SUCCESS":
       case "COMPLETED":
-        return Colors.teal;
+        return const Color(0xFF00A389);
       case "PENDING":
-        return Colors.orange;
+        return Colors.orange.shade700;
       case "FAILED":
       case "ERROR":
-        return Colors.red;
+        return const Color(0xFFE53935);
       default:
-        return Colors.grey;
+        return Colors.blueGrey;
     }
   }
 }
@@ -557,74 +545,80 @@ class _HeaderTopRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final dashboardState = context.findAncestorStateOfType<_DashboardState>()!;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(32),
-            border: Border.all(color: Colors.white24),
-            color: Colors.white.withValues(alpha: 0.1),
-          ),
-          child: Row(
-            children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.white24,
-                child: dashboardState._userName?.isNotEmpty ?? false
-                    ? Text(
-                        dashboardState._userName!.substring(0, 1).toUpperCase(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16,
-                        ),
-                      )
-                    : const Icon(Icons.person, color: Colors.white, size: 20),
+    return SizedBox(
+      width: double.infinity,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(32),
+                border: Border.all(color: Colors.white24),
+                color: Colors.white.withValues(alpha: 0.1),
               ),
-              const SizedBox(width: 12),
-              Flexible(
-                child: Text(
-                  "Hi, ${dashboardState._userName?.trim().isNotEmpty == true ? dashboardState._userName! : "User"}",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.white24,
+                    child: dashboardState._userName?.isNotEmpty ?? false
+                        ? Text(
+                            dashboardState._userName!.substring(0, 1).toUpperCase(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                            ),
+                          )
+                        : const Icon(Icons.person, color: Colors.white, size: 20),
                   ),
-                ),
+                  const SizedBox(width: 12),
+                  Flexible(
+                    child: Text(
+                      "Hi, ${dashboardState._userName?.trim().isNotEmpty == true ? dashboardState._userName! : "User"}",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        InkWell(
-          borderRadius: BorderRadius.circular(24),
-          onTap: () => Navigator.pushNamed(
-            context,
-            AppRoutes.notifications,
-            arguments: NotificationScreen(showAppbar: true),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white.withValues(alpha: 0.15),
-              border: Border.all(color: Colors.white24),
-            ),
-            child: Stack(
-              children: [
-                const Icon(
-                  Icons.notifications_none_outlined,
-                  color: Colors.white,
-                  size: 24,
-                ),
-                _NotificationBadge(),
-              ],
             ),
           ),
-        ),
-      ],
+          InkWell(
+            borderRadius: BorderRadius.circular(24),
+            onTap: () => Navigator.pushNamed(
+              context,
+              AppRoutes.notifications,
+              arguments: NotificationScreen(showAppbar: true),
+            ),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: 0.15),
+                border: Border.all(color: Colors.white24),
+              ),
+              child: Stack(
+                children: [
+                  const Icon(
+                    Icons.notifications_none_outlined,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                  _NotificationBadge(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -745,7 +739,7 @@ class _QuickActionButton extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          action.title,
+          _getLocalizedTitle(context, action.titleKey),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.w600,
@@ -754,6 +748,21 @@ class _QuickActionButton extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _getLocalizedTitle(BuildContext context, String titleKey) {
+    switch (titleKey) {
+      case 'send':
+        return appLocalizations(context).send;
+      case 'received':
+        return appLocalizations(context).received;
+      case 'payment':
+        return appLocalizations(context).payment;
+      case 'linkedAccounts':
+        return appLocalizations(context).linkedAccounts;
+      default:
+        return titleKey;
+    }
   }
 }
 

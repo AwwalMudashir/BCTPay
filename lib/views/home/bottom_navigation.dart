@@ -5,6 +5,15 @@ import 'package:local_auth_darwin/types/auth_messages_ios.dart';
 
 var bottomNavigationBloc = SelectionBloc(SelectIntState(0));
 
+class _IndexDashboard extends StatelessWidget {
+  const _IndexDashboard();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Dashboard();
+  }
+}
+
 class _MoreScreen extends StatefulWidget {
   const _MoreScreen();
 
@@ -411,18 +420,18 @@ class _BottomNavigationState extends State<BottomNavigation> {
         final bool didAuthenticate = await authenticate(context);
         if (didAuthenticate) {
           dialogShowing = false;
-          setState(() {});
+          if (mounted) setState(() {});
 
           return true;
         } else {
           //Not authenticated
           dialogShowing = true;
-          setState(() {});
+          if (mounted) setState(() {});
           return false;
         }
       } else {
         dialogShowing = false;
-        setState(() {});
+        if (mounted) setState(() {});
 
         return true;
         //Auth not available
@@ -430,7 +439,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     } catch (e) {
       //Exception
       dialogShowing = true;
-      setState(() {});
+      if (mounted) setState(() {});
       return false;
     }
   }
@@ -461,7 +470,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     const BeneficiaryListScreen(),
     const QRScanScreen(),
     const _MoreScreen(),
-    const Dashboard(), // Index tab - same content as Home
+    const _IndexDashboard(), // Index tab - same content as Home
   ];
 
   final selectedItemColor = themeLogoColorBlue;

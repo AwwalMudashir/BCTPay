@@ -361,7 +361,16 @@ class _BeneficiaryListScreenState extends State<BeneficiaryListScreen>
                                               showContactWhenNotExist: true,
                                             );
                                           }
-                                          return const Loader();
+                                          return const Center(
+                                            child: Text(
+                                              "Loading contacts...",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          );
                                         },
                                       ),
                                     ),
@@ -398,11 +407,29 @@ class _BeneficiaryListScreenState extends State<BeneficiaryListScreen>
                       ],
                     );
                   }
-                  return const Loader();
+                  return const Center(
+                    child: Text(
+                      "Loading beneficiaries...",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  );
                 },
               );
             }
-            return const Loader();
+            return const Center(
+              child: Text(
+                "Verifying account...",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
           }),
     );
   }
