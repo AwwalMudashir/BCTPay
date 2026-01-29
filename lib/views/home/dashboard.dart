@@ -37,6 +37,7 @@ class _DashboardState extends State<Dashboard> {
 
   // State variables
   String? _userName;
+  String? _profilePic;
   double? _walletBalance;
   String? _walletAccountName;
   String? _walletAccountNo;
@@ -264,6 +265,12 @@ class _DashboardState extends State<Dashboard> {
         _userName = value;
       });
     });
+    SharedPreferenceHelper.getProfilePic().then((value) {
+      if (!mounted) return;
+      setState(() {
+        _profilePic = value.isNotEmpty ? value : null;
+      });
+    });
   }
 
   Future<void> _loadWalletBalance() async {
@@ -279,6 +286,11 @@ class _DashboardState extends State<Dashboard> {
             : (balance.ccyCode.isNotEmpty ? balance.ccyCode : balance.ccy);
         _balanceLoading = false;
       });
+    } on SessionExpiredException catch (e) {
+      if (!mounted) return;
+      // Inform user and redirect to login for re-authentication
+      sessionExpired(e.message, context);
+      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.login, (route) => false);
     } catch (_) {
       if (!mounted) return;
       setState(() {
@@ -392,7 +404,17 @@ class _TransactionCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell( // Added ripple effect for better UX
           borderRadius: BorderRadius.circular(20),
-          onTap: () {}, 
+          onTap: () {
+            final dashboardState = context.findAncestorStateOfType<_DashboardState>();
+            Navigator.pushNamed(
+              context,
+              AppRoutes.transactionPreview,
+              arguments: {
+                'transaction': transaction,
+                'currency': dashboardState?._walletCurrency ?? 'GNF',
+              },
+            );
+          }, 
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
@@ -423,14 +445,22 @@ class _TransactionCard extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          Text(
-                            "${isCredit ? '+' : '-'}${transaction.formattedAmount}",
-                            style: textTheme.titleMedium?.copyWith(
-                              color: amountColor,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 16,
-                            ),
-                          ),
+                          // show currency near amount; default to wallet currency or GNF
+                          Builder(builder: (ctx) {
+                            final dashboardState = ctx.findAncestorStateOfType<_DashboardState>();
+                            final currency = (dashboardState?._walletCurrency ?? 'GNF').toUpperCase();
+                            final formatter = NumberFormat('#,##0.00');
+                            final amt = (isCredit ? '+' : '-') + formatter.format(transaction.amount.abs());
+                            final display = currency == 'GNF' ? '$amt GNF' : (currency.isNotEmpty ? '$currency $amt' : amt);
+                            return Text(
+                              display,
+                              style: textTheme.titleMedium?.copyWith(
+                                color: amountColor,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 16,
+                              ),
+                            );
+                          }),
                         ],
                       ),
                       
@@ -564,21 +594,26 @@ class _HeaderTopRow extends StatelessWidget {
                   CircleAvatar(
                     radius: 20,
                     backgroundColor: Colors.white24,
-                    child: dashboardState._userName?.isNotEmpty ?? false
-                        ? Text(
-                            dashboardState._userName!.substring(0, 1).toUpperCase(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16,
-                            ),
-                          )
-                        : const Icon(Icons.person, color: Colors.white, size: 20),
+                    backgroundImage: dashboardState._profilePic != null && dashboardState._profilePic!.isNotEmpty
+                        ? NetworkImage(baseUrlProfileImage + dashboardState._profilePic!) as ImageProvider
+                        : null,
+                    child: (dashboardState._profilePic == null || dashboardState._profilePic!.isEmpty)
+                        ? (dashboardState._userName?.isNotEmpty == true
+                            ? Text(
+                                dashboardState._userName!.split(' ').first.substring(0, 1).toUpperCase(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                ),
+                              )
+                            : const Icon(Icons.person, color: Colors.white, size: 20))
+                        : null,
                   ),
                   const SizedBox(width: 12),
                   Flexible(
                     child: Text(
-                      "Hi, ${dashboardState._userName?.trim().isNotEmpty == true ? dashboardState._userName! : "User"}",
+                      "Hi ${dashboardState._userName != null && dashboardState._userName!.trim().isNotEmpty ? dashboardState._userName!.split(' ').first : 'User'}",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -664,31 +699,28 @@ class _BalanceSection extends StatelessWidget {
                   strokeWidth: 2,
                 ),
               )
-            : Builder(
-                builder: (context) {
-                  final formatter = NumberFormat('#,##0.00');
-                  return Text(
-                    "${dashboardState._walletCurrency ?? ''} ${formatter.format(dashboardState._walletBalance ?? 0)}".trim(),
-                    style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                      color: Colors.white,
-                      fontSize: 36,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  );
-                },
-              ),
+                : Builder(
+                    builder: (context) {
+                      final formatter = NumberFormat('#,##0.00');
+                      final currency = (dashboardState._walletCurrency ?? '').toUpperCase();
+                      final amountStr = formatter.format(dashboardState._walletBalance ?? 0);
+                      final display = currency == 'GNF'
+                          ? "$amountStr GNF"
+                          : (currency.isNotEmpty ? "$currency $amountStr" : amountStr);
+                      return Text(
+                        display,
+                        style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                          color: Colors.white,
+                          fontSize: 36,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      );
+                    },
+                  ),
 
         const SizedBox(height: 6),
 
-        // Account info
-        if (dashboardState._walletAccountName != null || dashboardState._walletAccountNo != null)
-          Text(
-            "${dashboardState._walletAccountName ?? ""} ${dashboardState._walletAccountNo ?? ""}".trim(),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.white70,
-              fontSize: 13,
-            ),
-          ),
+        // Account info intentionally hidden per design
       ],
     );
   }

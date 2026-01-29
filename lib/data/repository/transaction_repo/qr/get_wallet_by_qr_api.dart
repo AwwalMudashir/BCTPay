@@ -1,4 +1,3 @@
-import 'package:bctpay/data/models/transactions/wallet_name_by_qr_response.dart';
 import 'package:bctpay/globals/index.dart';
 import 'package:bctpay/utils/http_with_logging.dart' as http;
 

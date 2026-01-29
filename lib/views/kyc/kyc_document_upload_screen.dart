@@ -1,12 +1,9 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:bctpay/globals/index.dart';
 import 'package:bctpay/data/models/kyc/kyc_response.dart';
 import 'package:bctpay/data/repository/kyc_repo/kyc_repository.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
-import 'package:permission_handler/permission_handler.dart';
 
 class KycDocumentUploadScreen extends StatefulWidget {
   static const String routeName = 'kyc-document-upload-screen';

@@ -1,5 +1,4 @@
 import 'package:bctpay/data/models/kyc/kyc_response.dart';
-import 'package:bctpay/data/models/kyc/submit_kyc_response.dart';
 import 'package:bctpay/globals/index.dart';
 import 'package:http/http.dart' as http;
 

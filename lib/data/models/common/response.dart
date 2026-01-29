@@ -26,7 +26,8 @@ class Response {
   });
 
   factory Response.fromJson(Map<String, dynamic> json) {
-    final rawCode = json["code"];
+    // Support multiple backend field names across services
+    final rawCode = json["code"] ?? json["responseCode"] ?? json["response_code"] ?? json["response"];
     final codeStr = rawCode?.toString();
     int? parsedCode;
     if (rawCode is int) {
@@ -35,14 +36,22 @@ class Response {
       parsedCode = int.tryParse(rawCode);
     }
 
+    // message may be under different keys
+    final message = json["message"] ?? json["responseMessage"] ?? json["response_message"] ?? json["desc"];
+
+    // data/success/error fallbacks
+    final data = json["data"] ?? json["result"];
+    final success = json["success"] as bool? ?? (codeStr == "00" || codeStr == "000");
+    final error = json["error"] ?? json["errors"];
+
     return Response(
       code: parsedCode,
       codeString: codeStr,
-        data: json["data"],
-        message: json["message"],
-        success: json["success"],
-        error: json["error"],
-      );
+      data: data,
+      message: message,
+      success: success,
+      error: error,
+    );
   }
 
   Map<String, dynamic> toJson() => {

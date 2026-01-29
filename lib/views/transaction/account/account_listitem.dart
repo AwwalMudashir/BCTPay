@@ -1,5 +1,4 @@
 import 'package:bctpay/globals/index.dart';
-import 'package:bctpay/views/widget/custom_txtfield.dart';
 
 Offset position = Offset.zero;
 

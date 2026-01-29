@@ -1,4 +1,3 @@
-import 'package:bctpay/data/models/transactions/beneficiary/beneficiary_fetch_response.dart';
 import 'package:bctpay/globals/index.dart';
 
 abstract class ApisBlocState extends Equatable {

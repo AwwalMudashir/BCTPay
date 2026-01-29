@@ -1,5 +1,4 @@
 import 'package:bctpay/globals/index.dart';
-import 'package:bctpay/views/my_app.dart';
 
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {

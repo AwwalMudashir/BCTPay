@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:bctpay/data/models/transactions/momo_lookup_response.dart';
-import 'package:bctpay/data/models/transactions/wallet_balance_response_model.dart';
 import 'package:bctpay/data/repository/transaction_repo/wallet/get_balance_api.dart';
 import 'package:bctpay/globals/index.dart';
 import 'package:intl/intl.dart';

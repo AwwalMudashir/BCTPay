@@ -1,7 +1,4 @@
-import 'package:bctpay/data/models/transactions/wallet_name_by_qr_response.dart';
-import 'package:bctpay/data/repository/transaction_repo/qr/get_wallet_by_qr_api.dart';
 import 'package:bctpay/globals/index.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ReceiveMoneyScreen extends StatefulWidget {
   const ReceiveMoneyScreen({super.key});

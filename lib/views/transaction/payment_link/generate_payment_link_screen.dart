@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:bctpay/data/models/transactions/payment_link_generate_response.dart';
 import 'package:bctpay/globals/index.dart';
 import 'package:intl/intl.dart';
 

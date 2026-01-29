@@ -1,5 +1,4 @@
 import 'package:bctpay/globals/index.dart';
-import 'package:bctpay/views/my_app.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

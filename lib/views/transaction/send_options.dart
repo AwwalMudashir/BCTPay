@@ -1,4 +1,3 @@
-import 'package:bctpay/data/models/transactions/beneficiary/beneficiary_fetch_response.dart';
 import 'package:bctpay/globals/index.dart';
 
 class SendOptionsScreen extends StatefulWidget {

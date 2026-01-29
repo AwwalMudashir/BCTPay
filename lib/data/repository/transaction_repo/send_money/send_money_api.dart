@@ -1,5 +1,4 @@
 
-import 'package:bctpay/data/models/transactions/send_money_response_model.dart';
 import 'package:bctpay/globals/index.dart';
 import 'package:http/http.dart' as http;
 

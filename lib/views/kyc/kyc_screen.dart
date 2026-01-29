@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:bctpay/globals/index.dart';
 import 'package:bctpay/data/models/kyc/kyc_response.dart' as kyc_models;

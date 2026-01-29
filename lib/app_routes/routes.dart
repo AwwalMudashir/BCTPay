@@ -15,6 +15,7 @@ import 'package:bctpay/views/user/change_pin.dart';
 import 'package:bctpay/views/user/forgot_pin.dart';
 import 'package:bctpay/views/kyc/kyc_screen.dart';
 import 'package:bctpay/views/kyc/kyc_document_upload_screen.dart';
+import 'package:bctpay/views/transaction/transaction_preview.dart';
 
 class AppRoutes {
   static const String splash = '/';
@@ -33,6 +34,7 @@ class AppRoutes {
   static const String selectAccountFromList = '/selectAccountFromList';
   static const String selftransfer = '/selftransfer';
   static const String transactiondetail = '/transactiondetail';
+    static const String transactionPreview = '/transactionPreview';
   static const String accountsList = '/accountsList';
   static const String requestToPay = '/requestToPay';
   static const String requestToPayDetail = '/requestToPayDetail';
@@ -119,6 +121,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   AppRoutes.selectAccountFromList: (context) => const SelectAccountFromList(),
   AppRoutes.selftransfer: (context) => const SelfTransferScreen(),
   AppRoutes.transactiondetail: (context) => const TransactionDetailScreen(),
+    AppRoutes.transactionPreview: (context) => const TransactionPreviewScreen(),
   // '/transfersuccess': (context) => TransferSuccessfullScreen(),
   AppRoutes.accountsList: (context) => const AccountsListScreen(),
   AppRoutes.requestToPay: (context) => const RequestToPayScreen(),

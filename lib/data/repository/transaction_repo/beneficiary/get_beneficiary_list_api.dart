@@ -1,5 +1,4 @@
 
-import 'package:bctpay/data/models/transactions/beneficiary/beneficiary_fetch_response.dart';
 import 'package:bctpay/globals/index.dart';
 import 'package:http/http.dart' as http;
 

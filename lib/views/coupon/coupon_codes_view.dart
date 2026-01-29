@@ -1,5 +1,4 @@
 import 'package:bctpay/globals/index.dart';
-import 'coupon_code_list_item.dart';
 
 class CouponCodeList extends StatelessWidget {
   final couponsListBloc = ApisBloc(ApisBlocInitialState())

@@ -1,8 +1,5 @@
 import 'dart:math';
 
-import 'package:bctpay/data/models/transactions/bank_lookup_response.dart';
-import 'package:bctpay/data/models/transactions/beneficiary/beneficiary_fetch_response.dart';
-import 'package:bctpay/data/models/transactions/wallet_balance_response_model.dart';
 import 'package:bctpay/data/repository/transaction_repo/wallet/get_balance_api.dart';
 import 'package:bctpay/globals/index.dart';
 

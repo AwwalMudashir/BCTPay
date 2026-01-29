@@ -1,6 +1,5 @@
 import 'package:bctpay/globals/index.dart';
 import 'package:bctpay/utils/http_with_logging.dart' as http;
-import 'package:bctpay/data/models/transactions/payment_link_generate_response.dart';
 
 Future<PaymentLinkGenerateResponse> generatePaymentLink({
   required double amount,

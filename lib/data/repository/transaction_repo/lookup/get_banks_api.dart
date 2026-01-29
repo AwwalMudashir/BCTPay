@@ -1,5 +1,4 @@
 
-import 'package:bctpay/data/models/transactions/bank_lookup_response.dart';
 import 'package:bctpay/globals/index.dart';
 import 'package:http/http.dart' as http;
 
