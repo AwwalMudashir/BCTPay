@@ -15,6 +15,7 @@ import 'package:bctpay/views/user/change_pin.dart';
 import 'package:bctpay/views/user/forgot_pin.dart';
 import 'package:bctpay/views/kyc/kyc_screen.dart';
 import 'package:bctpay/views/kyc/kyc_document_upload_screen.dart';
+import 'package:bctpay/views/kyc/kyc_face_verification.dart';
 import 'package:bctpay/views/transaction/transaction_preview.dart';
 
 class AppRoutes {
@@ -80,6 +81,7 @@ class AppRoutes {
   static const String kycFileView = "/kycFileView";
   static const String subscriptionDetail = "/subscriptionDetail";
   static const String kycSelfiePreview = "/kycSelfiePreview";
+    static const String kycFaceVerification = "/kycFaceVerification";
   static const String profileDetails = "/profileDetails";
   static const String filterTxnScreen = "/filterTxnScreen";
   static const String filterSubscriptionScreen = "/filterSubscriptionScreen";
@@ -172,6 +174,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   AppRoutes.kycFileView: (context) => const KYCFileView(),
   AppRoutes.subscriptionDetail: (context) => const SubscriptionDetail(),
   AppRoutes.kycSelfiePreview: (context) => const KYCSelfiePreview(),
+    AppRoutes.kycFaceVerification: (context) => const KycFaceVerification(),
   AppRoutes.profileDetails: (context) => const ProfileDetails(),
   AppRoutes.filterTxnScreen: (context) => const FilterTxnScreen(),
   AppRoutes.filterSubscriptionScreen: (context) =>

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bctpay/globals/index.dart';
 import 'package:bctpay/data/models/kyc/kyc_response.dart';
 import 'package:bctpay/data/repository/kyc_repo/kyc_repository.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:path/path.dart' as path;
 
 class KycDocumentUploadScreen extends StatefulWidget {
@@ -345,6 +346,14 @@ class _KycDocumentUploadScreenState
                 ),
               ),
               SizedBox(width: 12),
+              Expanded(
+                child: _buildUploadOption(
+                  icon: Icons.attach_file_outlined,
+                  title: 'Upload File',
+                  subtitle: 'PDF/Image',
+                  onTap: _pickFile,
+                ),
+              ),
             ],
           ),
         ],
@@ -689,6 +698,37 @@ class _KycDocumentUploadScreenState
     } catch (e) {
       setState(() {
         uploadError = 'Error picking image: ${e.toString()}';
+      });
+    }
+  }
+
+  // File picker functionality (PDF or other files)
+  Future<void> _pickFile() async {
+    try {
+      final typeGroup = XTypeGroup(label: 'documents', extensions: allowedExtensions);
+      final XFile? picked = await openFile(acceptedTypeGroups: [typeGroup]);
+
+      if (picked != null) {
+        final filePath = picked.path;
+        if (filePath == null) {
+          setState(() {
+            uploadError = 'Could not get the selected file path.';
+          });
+          return;
+        }
+
+        final file = File(filePath);
+        if (_validateFile(file)) {
+          setState(() {
+            uploadedDocument = file;
+            documentFileName = path.basename(file.path);
+            documentFileSize = _formatFileSize(file.lengthSync());
+          });
+        }
+      }
+    } catch (e) {
+      setState(() {
+        uploadError = 'Error picking file: ${e.toString()}';
       });
     }
   }
